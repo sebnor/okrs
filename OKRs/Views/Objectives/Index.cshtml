@@ -1,0 +1,33 @@
+﻿@using OKRs.Models.ObjectiveViewModels
+@model ObjectivesListViewModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Objectives</h2>
+
+<p>
+    <a asp-action="Create">Create New Objective</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Objective</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var objective in Model.Objectives) {
+        <tr>
+            <td>@objective.Title</td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = objective.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = objective.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = objective.Id })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
