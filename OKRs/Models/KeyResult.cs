@@ -10,5 +10,6 @@ namespace OKRs.Models
         }
 
         public Guid Id { get; private set; }
+        public string Description { get; set; }
     }
 }

@@ -1,0 +1,17 @@
+﻿@model OKRs.Models.ObjectiveViewModels.KeyResultDetailsViewModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Objective: @Model.ObjectiveTitle</h2>
+
+<a asp-controller="KeyResult" asp-action="Edit" asp-route-objectiveId="@Model.ObjectiveId" asp-route-keyResultId="@Model.Id">Edit</a>
+<div>
+    @Html.DisplayNameFor(model => model.Description)
+    @Html.DisplayFor(model => model.Description)
+
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
