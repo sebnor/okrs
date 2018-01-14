@@ -12,5 +12,6 @@ namespace OKRs.Repositories
         Task SaveObjective(Objective objective);
         Task<List<Objective>> GetAllObjectives();
         Task<Objective> GetObjectiveById(Guid id);
+        Task<List<Objective>> GetObjectivesByUserId(Guid userId);
     }
 }

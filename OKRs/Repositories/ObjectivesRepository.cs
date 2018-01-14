@@ -43,6 +43,11 @@ namespace OKRs.Repositories
             return (await ObjectivesCollection().FindAsync(Builders<Objective>.Filter.Eq(nameof(Objective.Id), id))).FirstOrDefault();
         }
 
+        public async Task<List<Objective>> GetObjectivesByUserId(Guid userId)
+        {
+            return (await ObjectivesCollection().FindAsync(Builders<Objective>.Filter.Eq(nameof(Objective.UserId), userId))).ToList();
+        }
+
         private IMongoCollection<Objective> ObjectivesCollection()
         {
             return _db.GetCollection<Objective>("objectives");

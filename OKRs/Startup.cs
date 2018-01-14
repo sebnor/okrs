@@ -10,6 +10,7 @@ using OKRs.Models;
 using OKRs.Services;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using OKRs.Repositories;
+using Microsoft.AspNetCore.Http;
 
 namespace OKRs
 {
@@ -35,7 +36,11 @@ namespace OKRs
 
             // Add application services.
             services.Configure<AppConfiguration>(options => Configuration.Bind(options));
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IObjectivesRepository, ObjectivesRepository>();
+            services.AddScoped<UserManager<ApplicationUser>, UserManager<ApplicationUser>>();
+            services.AddScoped<ICurrentContext, CurrentContext>();
+
             services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddAuthentication().AddGoogle(googleOptions =>

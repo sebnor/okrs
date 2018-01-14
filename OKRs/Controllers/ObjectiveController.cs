@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -11,63 +12,64 @@ namespace OKRs.Controllers
     public class ObjectiveController : Controller
     {
         private readonly IObjectivesRepository _objectivesRepository;
+        private readonly ICurrentContext _currentContext;
 
-        public ObjectiveController(IObjectivesRepository objectivesRepository)
+        public ObjectiveController(IObjectivesRepository objectivesRepository, ICurrentContext currentContext)
         {
             _objectivesRepository = objectivesRepository;
+            _currentContext = currentContext;
         }
 
-        // GET: Objective
+        [HttpGet]
         public async Task<ActionResult> Index()
         {
-            var objectives = await _objectivesRepository.GetAllObjectives();
-            var model = new ObjectivesListViewModel
-            {
-                Objectives = objectives.Select(x => new ObjectiveListItemViewModel { Id = x.Id, Title = x.Title }).ToList()
-            };
-
+            var user = await _currentContext.GetCurrentUser();
+            var model = await GetObjectiveModelForUser(Guid.Parse(user.Id));
             return View(model);
         }
 
-        // GET: Objective/Details/{guid}
+        [HttpGet]
+        public async Task<ActionResult> ByUserId(Guid userId)
+        {
+            var model = await GetObjectiveModelForUser(userId);
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> All()
+        {
+            var model = await GetObjectiveModelForAllUsers();
+            return View(model);
+        }
+
         public async Task<ActionResult> Details(Guid id)
         {
             var objective = await _objectivesRepository.GetObjectiveById(id);
             var model = new ObjectiveViewModel
             {
-                Title = objective.Title,
                 Id = objective.Id,
+                Title = objective.Title,
                 Created = objective.Created,
-                KeyResults = objective.KeyResults //TODO: convert to view model items
+                KeyResults = objective.KeyResults.Select(y => new KeyResultListItemViewModel { Id = y.Id, Description = y.Description }).ToList()
             };
             return View(model);
         }
 
-        // GET: Objective/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Objective/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(CreateObjectiveFormModel model)
+        public async Task<ActionResult> Create(CreateObjectiveFormModel model)
         {
-            try
-            {
-                var objective = new Objective(model.Title);
-                _objectivesRepository.CreateObjective(objective);
-
-                return RedirectToAction(nameof(Details), new { id = objective.Id });
-            }
-            catch
-            {
-                return View();
-            }
+            var user = await _currentContext.GetCurrentUser();
+            var objective = new Objective(model.Title, user.UserId);
+            await _objectivesRepository.CreateObjective(objective);
+            return RedirectToAction(nameof(Details), new { id = objective.Id });
         }
 
-        // GET: Objective/Edit/{guid}
         public async Task<ActionResult> Edit(Guid id)
         {
             var objective = await _objectivesRepository.GetObjectiveById(id);
@@ -80,7 +82,6 @@ namespace OKRs.Controllers
             return View(model);
         }
 
-        // POST: Objective/Edit/{guid}
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(Guid Id, [FromForm]UpdateObjectiveFormModel formModel)
@@ -96,27 +97,35 @@ namespace OKRs.Controllers
             return RedirectToAction(nameof(Details), new { id = Id });
         }
 
-        //// GET: Objectives/Delete/5
-        //public ActionResult Delete(int id)
-        //{
-        //    return View();
-        //}
+        private async Task<ObjectivesListViewModel> GetObjectiveModelForUser(Guid userId)
+        {
+            var objectives = await _objectivesRepository.GetObjectivesByUserId(userId);
+            return new ObjectivesListViewModel
+            {
+                Objectives = objectives.Select(x => new ObjectiveListItemViewModel
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    KeyResults = x.KeyResults.Select(y => new KeyResultListItemViewModel { Id = y.Id, Description = y.Description }).ToList()
+                }).ToList()
+            };
+        }
 
-        //// POST: Objectives/Delete/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Delete(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        // TODO: Add delete logic here
+        private async Task<List<ObjectivesListByUserViewModel>> GetObjectiveModelForAllUsers()
+        {
+            var objectiveGroup = (await _objectivesRepository.GetAllObjectives()).GroupBy(x => x.UserId);
 
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+            return objectiveGroup.Select(objectives =>
+             new ObjectivesListByUserViewModel
+             {
+                 User = new ObjectiveUserViewModel { FirstName = "foo" }, //TODO
+                 Objectives = objectives.Select(x => new ObjectiveListItemViewModel
+                 {
+                     Id = x.Id,
+                     Title = x.Title,
+                     KeyResults = x.KeyResults.Select(y => new KeyResultListItemViewModel { Id = y.Id, Description = y.Description }).ToList()
+                 }).ToList()
+             }).ToList();
+        }
     }
 }
