@@ -11,6 +11,8 @@ using OKRs.Services;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using OKRs.Repositories;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace OKRs
 {
@@ -60,7 +62,13 @@ namespace OKRs
                 };
             });
 
-            services.AddMvc();
+            services.AddMvc(config =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                                 .RequireAuthenticatedUser()
+                                 .Build();
+                config.Filters.Add(new AuthorizeFilter(policy));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
