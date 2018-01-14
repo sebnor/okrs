@@ -1,0 +1,29 @@
+﻿@model OKRs.Models.ObjectiveViewModels.ObjectiveViewModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.Title</h2>
+
+<div>
+    <a class="btn btn-primary" asp-controller="KeyResult" asp-action="Add" asp-route-objectiveId="@Model.Id">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+        Add Key Result
+    </a>
+    <h4>Key results</h4>
+    <ul>
+        @foreach (var keyResult in Model.KeyResults)
+        {
+            <li class="key-result">
+                @keyResult.Description <a asp-controller="KeyResult" asp-action="Details" asp-route-objectiveId="@Model.Id" asp-route-keyResultId="@keyResult.Id">Details</a>
+            </li>
+        }
+    </ul>
+
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

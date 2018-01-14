@@ -8,16 +8,16 @@ using OKRs.Repositories;
 
 namespace OKRs.Controllers
 {
-    public class ObjectivesController : Controller
+    public class ObjectiveController : Controller
     {
         private readonly IObjectivesRepository _objectivesRepository;
 
-        public ObjectivesController(IObjectivesRepository objectivesRepository)
+        public ObjectiveController(IObjectivesRepository objectivesRepository)
         {
             _objectivesRepository = objectivesRepository;
         }
 
-        // GET: Objectives
+        // GET: Objective
         public async Task<ActionResult> Index()
         {
             var objectives = await _objectivesRepository.GetAllObjectives();
@@ -29,7 +29,7 @@ namespace OKRs.Controllers
             return View(model);
         }
 
-        // GET: Objectives/Details/{guid}
+        // GET: Objective/Details/{guid}
         public async Task<ActionResult> Details(Guid id)
         {
             var objective = await _objectivesRepository.GetObjectiveById(id);
@@ -43,13 +43,13 @@ namespace OKRs.Controllers
             return View(model);
         }
 
-        // GET: Objectives/Create
+        // GET: Objective/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Objectives/Create
+        // POST: Objective/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(CreateObjectiveFormModel model)
@@ -67,30 +67,33 @@ namespace OKRs.Controllers
             }
         }
 
-        //// GET: Objectives/Edit/5
-        //public ActionResult Edit(int id)
-        //{
-        //    return View();
-        //}
-
-        // POST: Objectives/Edit/5
-        [HttpPut]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(UpdateObjectiveFormModel model)
+        // GET: Objective/Edit/{guid}
+        public async Task<ActionResult> Edit(Guid id)
         {
-            try
+            var objective = await _objectivesRepository.GetObjectiveById(id);
+            var model = new UpdateObjectiveViewModel
             {
-                var objective = await _objectivesRepository.GetObjectiveById(model.Id);
-                objective.Title = model.Title;
-                await _objectivesRepository.SaveObjective(objective);
+                Title = objective.Title,
+                Id = objective.Id,
+                Created = objective.Created
+            };
+            return View(model);
+        }
 
-                return RedirectToAction(nameof(Details), new { id = objective.Id });
-                //return RedirectToAction(nameof(Details));
-            }
-            catch
+        // POST: Objective/Edit/{guid}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(Guid Id, [FromForm]UpdateObjectiveFormModel formModel)
+        {
+            if (!ModelState.IsValid)
             {
-                return View();
+                return RedirectToAction(nameof(Details), new { id = Id });
             }
+            var objective = await _objectivesRepository.GetObjectiveById(Id);
+            objective.Title = formModel.Title;
+            await _objectivesRepository.SaveObjective(objective);
+
+            return RedirectToAction(nameof(Details), new { id = Id });
         }
 
         //// GET: Objectives/Delete/5
