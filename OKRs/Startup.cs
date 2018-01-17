@@ -44,6 +44,7 @@ namespace OKRs
             services.Configure<DataConfiguration>(options => Configuration.GetSection("Database").Bind(options));
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IObjectivesRepository, ObjectivesRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<UserManager<ApplicationUser>, UserManager<ApplicationUser>>();
             services.AddScoped<ICurrentContext, CurrentContext>();
 
@@ -58,8 +59,8 @@ namespace OKRs
                     OnCreatingTicket = context =>
                     {
                         string domain = context.User.Value<string>("domain");
-                        if (domain != "ifacts.se")
-                            throw new GoogleAuthenticationException("You must sign in with a ifacts.se email address");
+                        //if (domain != "ifacts.se")
+                        //    throw new GoogleAuthenticationException("You must sign in with a ifacts.se email address");
 
                         return Task.CompletedTask;
                     }

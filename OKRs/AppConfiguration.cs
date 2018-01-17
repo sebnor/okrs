@@ -11,6 +11,6 @@ namespace OKRs
         public string ConnectionString { get; set; }
         public string Name { get; set; }
         public string ObjectivesCollection { get; set; }
-
+        public string UserCollection { get; set; }
     }
 }

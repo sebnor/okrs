@@ -13,11 +13,16 @@ namespace OKRs.Controllers
     {
         private readonly IObjectivesRepository _objectivesRepository;
         private readonly ICurrentContext _currentContext;
+        private readonly IUserRepository _userRepository;
 
-        public ObjectiveController(IObjectivesRepository objectivesRepository, ICurrentContext currentContext)
+        public ObjectiveController(
+            IObjectivesRepository objectivesRepository,
+            ICurrentContext currentContext,
+            IUserRepository userRepository)
         {
             _objectivesRepository = objectivesRepository;
             _currentContext = currentContext;
+            _userRepository = userRepository;
         }
 
         [HttpGet]
@@ -117,14 +122,14 @@ namespace OKRs.Controllers
 
         private async Task<AllObjectivesListViewModel> GetObjectiveModelForAllUsers()
         {
-            var users = new Dictionary<Guid, ApplicationUser>(); //TODO: Load from DB
+            ObjectiveUserViewModel GetModelFromUser(ApplicationUser user) => new ObjectiveUserViewModel { Id = user?.UserId ?? Guid.Empty, FirstName = user?.UserName };
             var objectiveGroup = (await _objectivesRepository.GetAllObjectives()).GroupBy(x => x.UserId);
             return new AllObjectivesListViewModel
             {
                 UserObjectivesList = objectiveGroup.Select(objectives =>
                  new ObjectivesListByUserViewModel
                  {
-                     User = new ObjectiveUserViewModel { Id = objectives.Key, FirstName = "foo" }, //TODO: use users lookup
+                     User = GetModelFromUser(_userRepository.GetUserById(objectives.Key).Result), //TODO: try to find out how to get list of users
                      Objectives = objectives.Select(x => new ObjectiveListItemViewModel
                      {
                          Id = x.Id,

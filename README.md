@@ -8,12 +8,18 @@ Work in progress...
 Make sure the following keys gets populated with correct data using VS user secrets, appsettings or env variables:
 ```json
 {
-  "DataConnectionString": "mongodb://...",
-  "Database": "OKRs",
+  "Database": {
+    "ConnectionString": "mongodb://",
+    "HostUrl": "https://{dbaccount}.documents.azure.com/",
+    "Password": "",
+    "Name": "OKRs",
+    "UserCollection": "identities",
+    "ObjectivesCollection": "objectives"
+  },
   "Authentication": {
     "Google": {
-      "ClientId": "...",
-      "ClientSecret": "..."
+      "ClientId": "",
+      "ClientSecret": ""
     }
   }
 }
