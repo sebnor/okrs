@@ -7,14 +7,14 @@
   "targets": {
     ".NETStandard,Version=v2.0": {},
     ".NETStandard,Version=v2.0/": {
-      "CodeKoenig.AspNetCore.Identity.DocumentDb/2.0.0": {
+      "Sebnor.AspNetCore.Identity.DocumentDb/3.0.0": {
         "dependencies": {
           "Microsoft.AspNetCore.Identity": "2.0.0",
           "Microsoft.Azure.DocumentDB.Core": "1.5.0",
           "NETStandard.Library": "2.0.0"
         },
         "runtime": {
-          "CodeKoenig.AspNetCore.Identity.DocumentDb.dll": {}
+          "Sebnor.AspNetCore.Identity.DocumentDb.dll": {}
         }
       },
       "Microsoft.AspNetCore.Authentication/2.0.0": {
@@ -1206,7 +1206,7 @@
     }
   },
   "libraries": {
-    "CodeKoenig.AspNetCore.Identity.DocumentDb/2.0.0": {
+    "Sebnor.AspNetCore.Identity.DocumentDb/3.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
