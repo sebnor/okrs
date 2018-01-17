@@ -12,15 +12,15 @@ namespace OKRs.Repositories
     public class ObjectivesRepository : IObjectivesRepository
     {
         private readonly IMongoDatabase _db;
-        private readonly AppConfiguration _configuration;
+        private readonly DataConfiguration _configuration;
 
-        public ObjectivesRepository(IOptions<AppConfiguration> configuration)
+        public ObjectivesRepository(IOptions<DataConfiguration> configuration)
         {
             _configuration = configuration.Value;
-            MongoClientSettings settings = MongoClientSettings.FromUrl(new MongoUrl(_configuration.DataConnectionString));
+            var settings = MongoClientSettings.FromUrl(new MongoUrl(_configuration.ConnectionString));
             settings.SslSettings = new SslSettings { EnabledSslProtocols = SslProtocols.Tls12 };
             var mongoClient = new MongoClient(settings);
-            _db = mongoClient.GetDatabase(_configuration.Database);
+            _db = mongoClient.GetDatabase(_configuration.Name);
         }
         public async Task CreateObjective(Objective objective)
         {

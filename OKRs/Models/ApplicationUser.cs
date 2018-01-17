@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCore.Identity.DocumentDb;
 using Microsoft.AspNetCore.Identity;
 
 namespace OKRs.Models
 {
     // Add profile data for application users by adding properties to the ApplicationUser class
-    public class ApplicationUser : IdentityUser
+    public class ApplicationUser : DocumentDbIdentityUser
     {
         public Guid UserId
         {

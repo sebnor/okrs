@@ -59,7 +59,7 @@ namespace OKRs.Controllers
                 Username = user.UserName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
-                IsEmailConfirmed = user.EmailConfirmed,
+                IsEmailConfirmed = user.IsEmailConfirmed,
                 StatusMessage = StatusMessage
             };
 
@@ -318,7 +318,7 @@ namespace OKRs.Controllers
             var model = new TwoFactorAuthenticationViewModel
             {
                 HasAuthenticator = await _userManager.GetAuthenticatorKeyAsync(user) != null,
-                Is2faEnabled = user.TwoFactorEnabled,
+                Is2faEnabled = user.IsTwoFactorAuthEnabled,
                 RecoveryCodesLeft = await _userManager.CountRecoveryCodesAsync(user),
             };
 
@@ -334,7 +334,7 @@ namespace OKRs.Controllers
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            if (!user.TwoFactorEnabled)
+            if (!user.IsTwoFactorAuthEnabled)
             {
                 throw new ApplicationException($"Unexpected error occured disabling 2FA for user with ID '{user.Id}'.");
             }
@@ -451,7 +451,7 @@ namespace OKRs.Controllers
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            if (!user.TwoFactorEnabled)
+            if (!user.IsTwoFactorAuthEnabled)
             {
                 throw new ApplicationException($"Cannot generate recovery codes for user with ID '{user.Id}' as they do not have 2FA enabled.");
             }

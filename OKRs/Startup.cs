@@ -1,11 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using OKRs.Data;
 using OKRs.Models;
 using OKRs.Services;
 using Microsoft.AspNetCore.Authentication.OAuth;
@@ -13,6 +11,10 @@ using OKRs.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using System;
+using AspNetCore.Identity.DocumentDb;
+using Microsoft.Azure.Documents.Client;
+using Microsoft.Azure.Documents;
 
 namespace OKRs
 {
@@ -29,15 +31,17 @@ namespace OKRs
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            // Add DocumentDb client singleton instance
+            services.AddSingleton<IDocumentClient>(new DocumentClient(new Uri(Configuration["Database:HostUrl"]), Configuration["Database:Password"]));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+            services.AddIdentity<ApplicationUser, DocumentDbIdentityRole>()
+            .AddDocumentDbStores(options =>
+            {
+                options.Database = Configuration["Database:Name"];
+                options.UserStoreDocumentCollection = Configuration["Database:UserCollection"];
+            });
 
-            // Add application services.
-            services.Configure<AppConfiguration>(options => Configuration.Bind(options));
+            services.Configure<DataConfiguration>(options => Configuration.GetSection("Database").Bind(options));
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IObjectivesRepository, ObjectivesRepository>();
             services.AddScoped<UserManager<ApplicationUser>, UserManager<ApplicationUser>>();
