@@ -66,6 +66,8 @@ namespace OKRs
                 };
             });
 
+            Task.Run(async () => await SetupAzureDocumentDBAsync());
+
             services.AddMvc(config =>
             {
                 var policy = new AuthorizationPolicyBuilder()
@@ -73,6 +75,27 @@ namespace OKRs
                                  .Build();
                 config.Filters.Add(new AuthorizeFilter(policy));
             });
+        }
+
+        private async Task SetupAzureDocumentDBAsync()
+        {
+            using (var client = new DocumentClient(new Uri(Configuration["Database:HostUrl"]), Configuration["Database:Password"]))
+            {
+                //Create Database if it doesn't exists
+                await client.CreateDatabaseIfNotExistsAsync(new Database { Id = Configuration["Database:Name"] });
+
+                //Create user collection
+                await client.CreateDocumentCollectionIfNotExistsAsync(
+                    UriFactory.CreateDatabaseUri(Configuration["Database:Name"]),
+                    new DocumentCollection { Id = Configuration["Database:UserCollection"] },
+                    new RequestOptions { OfferThroughput = 400 });
+
+                //Create objectives collection
+                await client.CreateDocumentCollectionIfNotExistsAsync(
+                    UriFactory.CreateDatabaseUri(Configuration["Database:Name"]),
+                    new DocumentCollection { Id = Configuration["Database:ObjectivesCollection"] },
+                    new RequestOptions { OfferThroughput = 400 });
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

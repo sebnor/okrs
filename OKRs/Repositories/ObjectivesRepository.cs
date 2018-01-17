@@ -50,7 +50,7 @@ namespace OKRs.Repositories
 
         private IMongoCollection<Objective> ObjectivesCollection()
         {
-            return _db.GetCollection<Objective>("objectives");
+            return _db.GetCollection<Objective>(_configuration.ObjectivesCollection);
         }
     }
 }
