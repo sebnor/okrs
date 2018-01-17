@@ -58,7 +58,7 @@ namespace OKRs.Controllers
             {
                 Username = user.UserName,
                 Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
+                Name = user.Name,
                 IsEmailConfirmed = user.IsEmailConfirmed,
                 StatusMessage = StatusMessage
             };
@@ -91,13 +91,14 @@ namespace OKRs.Controllers
                 }
             }
 
-            var phoneNumber = user.PhoneNumber;
-            if (model.PhoneNumber != phoneNumber)
+            var Name = user.Name;
+            if (model.Name != Name)
             {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, model.PhoneNumber);
-                if (!setPhoneResult.Succeeded)
+                user.Name = model.Name;
+                var setName = await _userManager.UpdateAsync(user);
+                if (!setName.Succeeded)
                 {
-                    throw new ApplicationException($"Unexpected error occurred setting phone number for user with ID '{user.Id}'.");
+                    throw new ApplicationException($"Unexpected error occurred setting name for user with ID '{user.Id}'.");
                 }
             }
 

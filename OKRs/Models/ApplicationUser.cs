@@ -17,5 +17,15 @@ namespace OKRs.Models
                 return Guid.Parse(Id);
             }
         }
+
+        public string Name { get; set; }
+
+        public string DisplayName
+        {
+            get
+            {
+                return string.IsNullOrEmpty(Name) ? Email : Name;
+            }
+        }
     }
 }

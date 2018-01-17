@@ -14,7 +14,7 @@
 {
     <div class="list-group">
         <div href="#" class="list-group-item active clearfix">
-            <a  class="list-group-item-heading pull-left" asp-controller="Objective" asp-action="ByUserId" asp-route-userId="@userObjectives.User.Id"><strong>@userObjectives.User.FirstName</strong></a>
+            <a  class="list-group-item-heading pull-left" asp-controller="Objective" asp-action="ByUserId" asp-route-userId="@userObjectives.User.Id"><strong>@userObjectives.User.Name</strong></a>
             <a class="btn btn-xs btn-primary pull-right" asp-controller="Objective" asp-action="AddForUser" asp-route-userId="@userObjectives.User.Id">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                 Add Objective for User

@@ -37,8 +37,9 @@ namespace OKRs.Controllers
         [Route("[controller]/[action]/{userId}")]
         public async Task<ActionResult> ByUserId(Guid userId)
         {
-            var user = new ObjectiveUserViewModel { Id = userId, FirstName = "Foo" }; //TODO: fetch correct user from DB
-            ViewData["Title"] = $"Objectives for {user.FirstName}";
+            var user = await _userRepository.GetUserById(userId);
+            var userModel = new ObjectiveUserViewModel { Id = userId, Name = user?.Name ?? "John Doe" };
+            ViewData["Title"] = $"Objectives for {userModel.Name}";
             var model = await GetObjectiveModelForUser(userId);
             return View("Index", model);
         }
@@ -122,7 +123,7 @@ namespace OKRs.Controllers
 
         private async Task<AllObjectivesListViewModel> GetObjectiveModelForAllUsers()
         {
-            ObjectiveUserViewModel GetModelFromUser(ApplicationUser user) => new ObjectiveUserViewModel { Id = user?.UserId ?? Guid.Empty, FirstName = user?.UserName };
+            ObjectiveUserViewModel GetModelFromUser(ApplicationUser user) => new ObjectiveUserViewModel { Id = user?.UserId ?? Guid.Empty, Name = user?.DisplayName };
             var objectiveGroup = (await _objectivesRepository.GetAllObjectives()).GroupBy(x => x.UserId);
             return new AllObjectivesListViewModel
             {
