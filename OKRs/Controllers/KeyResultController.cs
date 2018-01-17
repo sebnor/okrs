@@ -60,7 +60,7 @@ namespace OKRs.Controllers
             objective.AddKeyResult(keyResult);
 
             await _objectivesRepository.SaveObjective(objective);
-            return RedirectToAction(nameof(Details), new { objectiveId, keyResultId = keyResult.Id });
+            return RedirectToAction("Details", "Objective", new { id = objectiveId });
         }
 
         [Route("[controller]/[action]/{objectiveId}/{keyResultId}")]
