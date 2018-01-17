@@ -58,9 +58,10 @@ namespace OKRs
                 {
                     OnCreatingTicket = context =>
                     {
+                        var domainFilter = Configuration["Authentication:Google:DomainFilter"];
                         string domain = context.User.Value<string>("domain");
-                        //if (domain != "ifacts.se")
-                        //    throw new GoogleAuthenticationException("You must sign in with a ifacts.se email address");
+                        if (!string.IsNullOrEmpty(domainFilter) && domain != domainFilter)
+                            throw new GoogleAuthenticationException($"You must sign in with a {domainFilter} email address");
 
                         return Task.CompletedTask;
                     }
