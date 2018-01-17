@@ -1,0 +1,31 @@
+﻿@model OKRs.Models.ObjectiveViewModels.AllObjectivesListViewModel
+
+@{
+    ViewData["Title"] = "All objectives";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<ol class="breadcrumb">
+    <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+</ol>
+<h3>All Objectives</h3>
+
+@foreach (var userObjectives in Model.UserObjectivesList)
+{
+    <div class="list-group">
+        <div href="#" class="list-group-item active clearfix">
+            <a  class="list-group-item-heading pull-left" asp-controller="Objective" asp-action="ByUserId" asp-route-userId="@userObjectives.User.Id"><strong>@userObjectives.User.FirstName</strong></a>
+            <a class="btn btn-xs btn-primary pull-right" asp-controller="Objective" asp-action="AddForUser" asp-route-userId="@userObjectives.User.Id">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                Add Objective for User
+            </a>
+        </div>
+        @foreach (var objective in userObjectives.Objectives)
+        {
+            <a asp-controller="Objective" asp-action="Details" asp-route-id="@objective.Id" class="list-group-item">
+                O: @objective.Title
+                <span class="badge" title="@objective.KeyResults.Count() Key Result(s)">@objective.KeyResults.Count()</span>
+            </a>
+        }
+    </div>
+}

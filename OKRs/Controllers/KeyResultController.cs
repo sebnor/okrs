@@ -88,6 +88,7 @@ namespace OKRs.Controllers
             var objective = await _objectivesRepository.GetObjectiveById(objectiveId);
             var keyResult = objective.KeyResults.Single(x => x.Id == keyResultId);
             keyResult.Description = formModel.Description;
+            keyResult.Touch();
 
             await _objectivesRepository.SaveObjective(objective);
             return RedirectToAction(nameof(Details), new { objectiveId, keyResultId = keyResult.Id });

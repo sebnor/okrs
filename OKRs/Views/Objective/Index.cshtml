@@ -2,12 +2,16 @@
 @model ObjectivesListViewModel
 
 @{
-    ViewData["Title"] = "Index";
+    if (ViewData["Title"] == null)
+    {
+        ViewData["Title"] = "My Objectives";
+    }
+
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h3 class="clearfix">
-    <span class="pull-left">Objectives</span>
+    <span class="pull-left">@ViewData["Title"]</span>
     <a class="btn btn-sm btn-primary pull-right" asp-action="Create">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
         New Objective

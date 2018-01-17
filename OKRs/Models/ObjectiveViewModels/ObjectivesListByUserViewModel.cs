@@ -2,6 +2,7 @@
 
 namespace OKRs.Models.ObjectiveViewModels
 {
+
     public class ObjectivesListByUserViewModel
     {
         public ObjectiveUserViewModel User { get; set; }

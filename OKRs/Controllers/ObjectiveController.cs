@@ -29,10 +29,13 @@ namespace OKRs.Controllers
         }
 
         [HttpGet]
+        [Route("[controller]/[action]/{userId}")]
         public async Task<ActionResult> ByUserId(Guid userId)
         {
+            var user = new ObjectiveUserViewModel { Id = userId, FirstName = "Foo" }; //TODO: fetch correct user from DB
+            ViewData["Title"] = $"Objectives for {user.FirstName}";
             var model = await GetObjectiveModelForUser(userId);
-            return View(model);
+            return View("Index", model);
         }
 
         [HttpGet]
@@ -92,6 +95,7 @@ namespace OKRs.Controllers
             }
             var objective = await _objectivesRepository.GetObjectiveById(Id);
             objective.Title = formModel.Title;
+            objective.Touch();
             await _objectivesRepository.SaveObjective(objective);
 
             return RedirectToAction(nameof(Details), new { id = Id });
@@ -111,21 +115,24 @@ namespace OKRs.Controllers
             };
         }
 
-        private async Task<List<ObjectivesListByUserViewModel>> GetObjectiveModelForAllUsers()
+        private async Task<AllObjectivesListViewModel> GetObjectiveModelForAllUsers()
         {
+            var users = new Dictionary<Guid, ApplicationUser>(); //TODO: Load from DB
             var objectiveGroup = (await _objectivesRepository.GetAllObjectives()).GroupBy(x => x.UserId);
-
-            return objectiveGroup.Select(objectives =>
-             new ObjectivesListByUserViewModel
-             {
-                 User = new ObjectiveUserViewModel { FirstName = "foo" }, //TODO
-                 Objectives = objectives.Select(x => new ObjectiveListItemViewModel
+            return new AllObjectivesListViewModel
+            {
+                UserObjectivesList = objectiveGroup.Select(objectives =>
+                 new ObjectivesListByUserViewModel
                  {
-                     Id = x.Id,
-                     Title = x.Title,
-                     KeyResults = x.KeyResults.Select(y => new KeyResultListItemViewModel { Id = y.Id, Description = y.Description }).ToList()
+                     User = new ObjectiveUserViewModel { Id = objectives.Key, FirstName = "foo" }, //TODO: use users lookup
+                     Objectives = objectives.Select(x => new ObjectiveListItemViewModel
+                     {
+                         Id = x.Id,
+                         Title = x.Title,
+                         KeyResults = x.KeyResults.Select(y => new KeyResultListItemViewModel { Id = y.Id, Description = y.Description }).ToList()
+                     }).ToList()
                  }).ToList()
-             }).ToList();
+            };
         }
     }
 }
