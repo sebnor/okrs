@@ -5,6 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <ol class="breadcrumb">
+    <li><a asp-controller="Home" asp-action="Index">Home</a></li>
     <li><a asp-controller="Objective" asp-action="Index">Objectives</a></li> @*TODO: Set back link to objectives list for objective.userId*@
     <li><a asp-controller="Objective" asp-action="Details" asp-route-id="@Model.ObjectiveId">@Model.ObjectiveTitle</a></li>
 </ol>

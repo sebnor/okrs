@@ -1,12 +1,20 @@
 ﻿@{
-    ViewData["Title"] = "OKRs";
+    ViewData["Title"] = "Home";
 }
 <h3>Objectives and Key Results</h3>
-<ul>
-    <li>
-        <a asp-controller="Objective" asp-action="Index">My objectives</a>
-    </li>
-    <li>
-        <a asp-controller="Objective" asp-action="All">Objectives for all users</a>
-    </li>
-</ul>
+<div class="container">
+    <div class="row text-center">
+        <div class="col-md-4">
+            <a style="text-decoration: none;" asp-controller="Objective" asp-action="Index">
+                <span style="font-size:4.5em;" class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                <h4>My objectives</h4>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a style="text-decoration: none;" asp-controller="Objective" asp-action="All">
+                <span style="font-size:4.5em;" class="glyphicon glyphicon-list" aria-hidden="true"></span>
+                <h4>Objectives for all users</h4>
+            </a>
+        </div>
+    </div>
+</div>

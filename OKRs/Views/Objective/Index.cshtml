@@ -9,7 +9,9 @@
 
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<ol class="breadcrumb">
+    <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+</ol>
 <h3 class="clearfix">
     <span class="pull-left">@ViewData["Title"]</span>
     <a class="btn btn-sm btn-primary pull-right" asp-action="Create">
