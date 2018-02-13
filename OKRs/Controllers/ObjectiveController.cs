@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -51,6 +50,7 @@ namespace OKRs.Controllers
             return View(model);
         }
 
+        [HttpGet]
         public async Task<ActionResult> Details(Guid id)
         {
             var objective = await _objectivesRepository.GetObjectiveById(id);
@@ -64,6 +64,7 @@ namespace OKRs.Controllers
             return View(model);
         }
 
+        [HttpGet]
         public ActionResult Create()
         {
             return View();
@@ -79,6 +80,7 @@ namespace OKRs.Controllers
             return RedirectToAction(nameof(Details), new { id = objective.Id });
         }
 
+        [HttpGet]
         public async Task<ActionResult> Edit(Guid id)
         {
             var objective = await _objectivesRepository.GetObjectiveById(id);
@@ -93,18 +95,18 @@ namespace OKRs.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(Guid Id, [FromForm]UpdateObjectiveFormModel formModel)
+        public async Task<ActionResult> Edit(Guid id, [FromForm]UpdateObjectiveFormModel formModel)
         {
             if (!ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Details), new { id = Id });
+                return RedirectToAction(nameof(Details), new { id });
             }
-            var objective = await _objectivesRepository.GetObjectiveById(Id);
+            var objective = await _objectivesRepository.GetObjectiveById(id);
             objective.Title = formModel.Title;
             objective.Touch();
             await _objectivesRepository.SaveObjective(objective);
 
-            return RedirectToAction(nameof(Details), new { id = Id });
+            return RedirectToAction(nameof(Details), new { id });
         }
 
         private async Task<ObjectivesListViewModel> GetObjectiveModelForUser(Guid userId)
@@ -130,7 +132,7 @@ namespace OKRs.Controllers
                 UserObjectivesList = objectiveGroup.Select(objectives =>
                  new ObjectivesListByUserViewModel
                  {
-                     User = GetModelFromUser(_userRepository.GetUserById(objectives.Key).Result), //TODO: try to find out how to get list of users
+                     User = GetModelFromUser(_userRepository.GetUserById(objectives.Key).Result), //TODO: get all users in lookup table
                      Objectives = objectives.Select(x => new ObjectiveListItemViewModel
                      {
                          Id = x.Id,

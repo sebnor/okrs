@@ -1,0 +1,29 @@
+﻿@model OKRs.Models.UserViewModels.CreateUserFormModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<ol class="breadcrumb">
+    <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+    <li><a asp-controller="User" asp-action="Index">Users</a></li>
+</ol>
+
+<h3>Create User</h3>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
