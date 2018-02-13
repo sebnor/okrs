@@ -250,15 +250,29 @@ namespace OKRs.Controllers
             {
                 return RedirectToAction(nameof(Lockout));
             }
-            else
+            
+            // If a user with the provided email already exists, connect that user with the external login
+            var name = info.Principal.FindFirstValue(ClaimTypes.Name);
+            var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user != null)
             {
-                // If the user does not have an account, then ask the user to create an account.
-                ViewData["ReturnUrl"] = returnUrl;
-                ViewData["LoginProvider"] = info.LoginProvider;
-                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
-                var name = info.Principal.FindFirstValue(ClaimTypes.Name);
-                return View("ExternalLogin", new ExternalLoginViewModel { Email = email, Name = name });
+                var extUserAddResult = await _userManager.AddLoginAsync(user, info);
+                if (extUserAddResult.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
+                    return RedirectToLocal(returnUrl);
+                }
             }
+
+            ViewData["ReturnUrl"] = returnUrl;
+            ViewData["LoginProvider"] = info.LoginProvider;
+            return View(nameof(ExternalLogin), new ExternalLoginViewModel
+            {
+                Email = email,
+                Name = name
+            });
         }
 
         [HttpPost]
