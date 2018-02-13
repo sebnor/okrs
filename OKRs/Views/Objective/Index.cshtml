@@ -11,13 +11,24 @@
 }
 <ol class="breadcrumb">
     <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+    <li><a asp-controller="Objective" asp-action="All">All Objectives</a></li>
 </ol>
 <h3 class="clearfix">
     <span class="pull-left">@ViewData["Title"]</span>
-    <a class="btn btn-sm btn-primary pull-right" asp-action="Create">
-        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-        New Objective
-    </a>
+    @if (Model.IsObjectivesForCurrentUser)
+    {
+        <a class="btn btn-sm btn-primary pull-right" asp-action="Create">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            New Objective
+        </a>
+    }
+    else
+    {
+        <a class="btn btn-sm btn-primary pull-right" asp-action="CreateForUser" asp-route-id="@Model.UserId">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            New Objective
+        </a>
+    }
 </h3>
 
 <p>

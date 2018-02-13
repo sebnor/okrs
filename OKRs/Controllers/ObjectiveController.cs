@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using OKRs.Models;
 using OKRs.Models.ObjectiveViewModels;
 using OKRs.Repositories;
@@ -37,8 +39,11 @@ namespace OKRs.Controllers
         public async Task<ActionResult> ByUserId(Guid userId)
         {
             var user = await _userRepository.GetUserById(userId);
-            var userModel = new ObjectiveUserViewModel { Id = userId, Name = user?.Name ?? "John Doe" };
-            ViewData["Title"] = $"Objectives for {userModel.Name}";
+            if (user == null)
+                return RedirectToAction(nameof(All));
+
+            //var userModel = new ObjectiveUserViewModel { Id = userId, Name = user.Name };
+            ViewData["Title"] = $"Objectives for {user.Name}";
             var model = await GetObjectiveModelForUser(userId);
             return View("Index", model);
         }
@@ -70,12 +75,29 @@ namespace OKRs.Controllers
             return View();
         }
 
+        [HttpGet]
+        public ActionResult CreateForUser(Guid id)
+        {
+            ViewBag.Users = _userRepository.GetAllUsers().Select(x => new { Value = x.Id, Text = x.Name }).ToList();
+            return View(new CreateObjectiveFormModel { UserId = id });
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(CreateObjectiveFormModel model)
         {
             var user = await _currentContext.GetCurrentUser();
             var objective = new Objective(model.Title, user.UserId);
+            await _objectivesRepository.CreateObjective(objective);
+            return RedirectToAction(nameof(Details), new { id = objective.Id });
+        }
+
+        [HttpPost]
+        //[Authorize(Roles="Admin")] TODO: implement roles for certain actions
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateForUser(CreateObjectiveFormModel model)
+        {
+            var objective = new Objective(model.Title, model.UserId);
             await _objectivesRepository.CreateObjective(objective);
             return RedirectToAction(nameof(Details), new { id = objective.Id });
         }
@@ -99,7 +121,8 @@ namespace OKRs.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Details), new { id });
+                var viewModel = new UpdateObjectiveViewModel { Title = formModel.Title };
+                return View(nameof(Edit), viewModel);
             }
             var objective = await _objectivesRepository.GetObjectiveById(id);
             objective.Title = formModel.Title;
@@ -114,6 +137,8 @@ namespace OKRs.Controllers
             var objectives = await _objectivesRepository.GetObjectivesByUserId(userId);
             return new ObjectivesListViewModel
             {
+                UserId = userId,
+                IsObjectivesForCurrentUser = userId == Guid.Parse((await _currentContext.GetCurrentUser()).Id),
                 Objectives = objectives.Select(x => new ObjectiveListItemViewModel
                 {
                     Id = x.Id,
@@ -139,7 +164,7 @@ namespace OKRs.Controllers
                          Title = x.Title,
                          KeyResults = x.KeyResults.Select(y => new KeyResultListItemViewModel { Id = y.Id, Description = y.Description }).ToList()
                      }).ToList()
-                 }).ToList()
+                 }).OrderBy(x => x.User.Name).ToList()
             };
         }
     }
