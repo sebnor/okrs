@@ -11,10 +11,8 @@ using OKRs.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
-using System;
-using AspNetCore.Identity.DocumentDb;
-using Microsoft.Azure.Documents.Client;
-using Microsoft.Azure.Documents;
+using OKRs.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace OKRs
 {
@@ -31,24 +29,24 @@ namespace OKRs
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add DocumentDb client singleton instance
-            services.AddSingleton<IDocumentClient>(new DocumentClient(new Uri(Configuration["Database:HostUrl"]), Configuration["Database:Password"]));
 
-            services.AddIdentity<ApplicationUser, DocumentDbIdentityRole>()
-            .AddDocumentDbStores(options =>
-            {
-                options.Database = Configuration["Database:Name"];
-                options.UserStoreDocumentCollection = Configuration["Database:UserCollection"];
-            });
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<ObjectivesDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
             services.Configure<DataConfiguration>(options => Configuration.GetSection("Database").Bind(options));
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddSingleton<IObjectivesRepository, ObjectivesRepository>();
+            services.AddScoped<IObjectivesRepository, ObjectivesRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<UserManager<ApplicationUser>, UserManager<ApplicationUser>>();
             services.AddScoped<ICurrentContext, CurrentContext>();
 
-            services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<IEmailSender, EmailSender>(); //Add sendgrid service for emails
 
             services.AddAuthentication().AddGoogle(googleOptions =>
             {
@@ -68,36 +66,13 @@ namespace OKRs
                 };
             });
 
-            Task.Run(async () => await SetupAzureDocumentDBAsync());
-
             services.AddMvc(config =>
             {
                 var policy = new AuthorizationPolicyBuilder()
-                                 .RequireAuthenticatedUser()
-                                 .Build();
+                    .RequireAuthenticatedUser()
+                    .Build();
                 config.Filters.Add(new AuthorizeFilter(policy));
             });
-        }
-
-        private async Task SetupAzureDocumentDBAsync()
-        {
-            using (var client = new DocumentClient(new Uri(Configuration["Database:HostUrl"]), Configuration["Database:Password"]))
-            {
-                //Create Database if it doesn't exists
-                await client.CreateDatabaseIfNotExistsAsync(new Database { Id = Configuration["Database:Name"] });
-
-                //Create user collection
-                await client.CreateDocumentCollectionIfNotExistsAsync(
-                    UriFactory.CreateDatabaseUri(Configuration["Database:Name"]),
-                    new DocumentCollection { Id = Configuration["Database:UserCollection"] },
-                    new RequestOptions { OfferThroughput = 400 });
-
-                //Create objectives collection
-                await client.CreateDocumentCollectionIfNotExistsAsync(
-                    UriFactory.CreateDatabaseUri(Configuration["Database:Name"]),
-                    new DocumentCollection { Id = Configuration["Database:ObjectivesCollection"] },
-                    new RequestOptions { OfferThroughput = 400 });
-            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

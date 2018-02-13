@@ -5,6 +5,8 @@ namespace OKRs.Models
 {
     public class Objective
     {
+        public Objective() { }
+
         public Objective(string title, Guid userId)
         {
             Title = title;
@@ -29,7 +31,7 @@ namespace OKRs.Models
 
         public string Title { get; set; }
         public Guid UserId { get; private set; }
-        public Guid Id { get; private set; } = Guid.NewGuid();
+        public Guid Id { get; private set; }
         public DateTime Created { get; private set; } = DateTime.Now;
         public DateTime LastUpdated { get; private set; }
         public List<KeyResult> KeyResults { get; private set; } = new List<KeyResult>();
