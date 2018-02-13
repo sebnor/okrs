@@ -72,16 +72,23 @@ namespace OKRs.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(nameof(Edit), new { id });
+                model.Id = id;
+                return View(nameof(Edit), model);
             }
 
             var user = await _userRepository.GetUserById(id);
             user.Email = model.Email;
             user.Name = model.Name;
             user.UserName = model.UserName;
-            await _userRepository.SaveUser(user);
+            var result = await _userRepository.SaveUser(user);
+            if (result.Succeeded)
+            {
+                return RedirectToAction(nameof(Index));
+            }
 
-            return RedirectToAction(nameof(Index));
+            model.Id = id;
+            AddErrors(result);
+            return View(nameof(Edit), model);
         }
 
         #region Helpers
