@@ -1,0 +1,24 @@
+﻿
+@{
+    ViewData["Title"] = "Import";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<ol class="breadcrumb">
+    <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+</ol>
+
+<h3>Import data</h3>
+
+<form method="post" enctype="multipart/form-data" asp-controller="Import" asp-action="Upload">
+    <div class="form-group">
+        <div class="col-md-10">
+            <input type="file" name="files" />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-10">
+            <input type="submit" value="Upload" />
+        </div>
+    </div>
+</form>
