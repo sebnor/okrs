@@ -39,7 +39,6 @@ namespace OKRs
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.Configure<DataConfiguration>(options => Configuration.GetSection("Database").Bind(options));
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IObjectivesRepository, ObjectivesRepository>();
             services.AddScoped<IUserRepository, UserRepository>();

@@ -12,7 +12,11 @@ namespace OKRs
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .CaptureStartupErrors(true)
+                .UseApplicationInsights()
+#if DEBUG
                 .UseUrls("http://*:5000")
+#endif
                 .UseStartup<Startup>()
                 .Build();
     }
