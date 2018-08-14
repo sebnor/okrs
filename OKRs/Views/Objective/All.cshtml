@@ -1,14 +1,22 @@
 ﻿@model OKRs.Models.ObjectiveViewModels.AllObjectivesListViewModel
 
 @{
-    ViewData["Title"] = "All objectives";
+    ViewData["Title"] = "All Objectives";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <ol class="breadcrumb">
     <li><a asp-controller="Home" asp-action="Index">Home</a></li>
 </ol>
-<h3>All Objectives</h3>
+<h3 class="clearfix">
+    <span class="pull-left">@ViewData["Title"]</span>
+
+    <a class="btn btn-sm btn-primary pull-right" asp-action="CreateForUser">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+        New Objective
+    </a>
+    
+</h3>
 
 @foreach (var userObjectives in Model.UserObjectivesList)
 {
