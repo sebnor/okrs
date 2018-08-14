@@ -48,7 +48,8 @@ namespace OKRs.Controllers
                     sheet = hssfwb.GetSheetAt(0); //get first sheet from workbook   
 
                     var usersLookup = _userRepository.GetAllUsers().ToDictionary(x => x.UserName);
-                    var objectiveLookup = (await _objectivesRepository.GetAllObjectives()).ToDictionary(x => x.Title);
+                    //var objectiveLookup = (await _objectivesRepository.GetAllObjectives()).ToDictionary(x => x.Title);
+                    var objectiveLookup = await GetObjectiveLookup();
 
                     for (int i = (sheet.FirstRowNum + 1); i <= sheet.LastRowNum; i++) //Read Excel File
                     {
@@ -68,6 +69,17 @@ namespace OKRs.Controllers
                 }
             }
             return RedirectToAction("Index", "Objective");
+        }
+
+        private async Task<Dictionary<string, Objective>> GetObjectiveLookup()
+        {
+            var dic = new Dictionary<string, Objective>();
+            var objectives = await _objectivesRepository.GetAllObjectives();
+            foreach (var objective in objectives)
+            {
+                dic.TryAdd(objective.Title, objective);
+            }
+            return dic;
         }
 
         private async Task CreateOrGetKeyResult(Objective objective, ApplicationUser user, string k)
