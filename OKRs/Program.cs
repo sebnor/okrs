@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.ApplicationInsights.AspNetCore;
 
 namespace OKRs
 {
@@ -7,17 +8,16 @@ namespace OKRs
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            CreateWebHostBuilder(args).Build().Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .CaptureStartupErrors(true)
                 .UseApplicationInsights()
 #if DEBUG
                 .UseUrls("http://*:5000")
 #endif
-                .UseStartup<Startup>()
-                .Build();
+                .UseStartup<Startup>();
     }
 }
