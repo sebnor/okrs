@@ -21,14 +21,30 @@ namespace OKRs.Repositories
             return await _userManager.FindByIdAsync(id.ToString());
         }
 
-        public List<ApplicationUser> GetAllUsers()
+        public List<ApplicationUser> GetAllUsers(bool includeInactive)
         {
-            return _userManager.Users.ToList();
+            if (includeInactive)
+                return _userManager.Users.ToList();
+            return _userManager.Users.Where(x => !x.Inactive).ToList();
         }
 
         public async Task<IdentityResult> SaveUser(ApplicationUser user)
         {
             return await _userManager.UpdateAsync(user);
+        }
+
+        public async Task InactivateUser(Guid id)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            user.Inactive = true;
+            await _userManager.UpdateAsync(user);
+        }
+
+        public async Task ActivateUser(Guid id)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            user.Inactive = false;
+            await _userManager.UpdateAsync(user);
         }
 
         public async Task<IdentityResult> CreateUser(ApplicationUser user)
