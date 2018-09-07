@@ -23,6 +23,7 @@
     <tr>
         <th>Name</th>
         <th>Email</th>
+        <th>Status</th>
         <th>&nbsp;</th>
     </tr>
     @foreach (var user in Model.Users)
@@ -30,6 +31,7 @@
         <tr>
             <td>@user.Name</td>
             <td>@user.Email</td>
+            <td>@(user.IsInactive ? "Inactive" : "Active" )</td>
             <td>
                 <a class="btn btn-xs btn-primary" asp-action="Edit" asp-route-id="@user.Id">
                     <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>

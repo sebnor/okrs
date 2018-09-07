@@ -26,8 +26,8 @@ namespace OKRs.Controllers
         public ActionResult Index()
         {
             var users = _userRepository
-                .GetAllUsers()
-                .Select(x => new UserListItemViewModel { Id = Guid.Parse(x.Id), Email = x.Email, Name = x.Name })
+                .GetAllUsers(includeInactive: true)
+                .Select(x => new UserListItemViewModel { Id = Guid.Parse(x.Id), Email = x.Email, Name = x.Name, IsInactive = x.Inactive })
                 .OrderBy(x => x.Name)
                 .ToList();
 
@@ -98,7 +98,6 @@ namespace OKRs.Controllers
             user.Email = model.Email;
             user.Name = model.Name;
             user.UserName = model.UserName;
-            user.Inactive = model.IsInactive;
             var result = await _userRepository.SaveUser(user);
             if (result.Succeeded)
             {
