@@ -1,6 +1,6 @@
 # OKRs
 
-Objectives and Key Results tooling built with .NET Core 2.0 and C#
+Objectives and Key Results tooling built with .NET Core 2.1 and C#
 
 Work in progress...
 
@@ -10,20 +10,21 @@ Make sure the following keys gets populated with correct data using VS user secr
 
 ```json
 {
-  "Database": {
-    "ConnectionString": "mongodb://",
-    "HostUrl": "https://{dbaccount}.documents.azure.com/",
-    "Password": "",
-    "Name": "OKRs",
-    "UserCollection": "identities",
-    "ObjectivesCollection": "objectives"
-  },
   "Authentication": {
     "Google": {
       "ClientId": "",
       "ClientSecret": "",
-      "DomainFilter": "localhost.se"
-    }
-  }
-}
+      "DomainFilter": "localhost.se" //only allow users with email domain "localhost.se" to register using Google OAuth
 ```
+
+## List of potential future features
+
+### Prioritized
+
+* [ ] Implement Role based user/admin access
+* [ ] Limit add/edit of other user's OKRs for admins
+* [ ] Inactivate users
+
+### Nice to have
+
+See <https://github.com/sebnor/okrs/issues>
