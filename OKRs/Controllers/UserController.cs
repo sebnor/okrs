@@ -57,11 +57,29 @@ namespace OKRs.Controllers
             return View();
         }
 
+        // POST: User/Inactivate/{id}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Inactivate(Guid id)
+        {
+            await _userRepository.InactivateUser(id);
+            return RedirectToAction(nameof(Index));
+        }
+
+        // POST: User/Activate/{id}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Activate(Guid id)
+        {
+            await _userRepository.ActivateUser(id);
+            return RedirectToAction(nameof(Index));
+        }
+
         // GET: User/Edit/{id}
         public async Task<ActionResult> Edit(Guid id)
         {
             var user = await _userRepository.GetUserById(id);
-            var model = new SaveUserFormModel { Id = id, Name = user.Name, Email = user.Email, UserName = user.UserName };
+            var model = new SaveUserFormModel { Id = id, Name = user.Name, Email = user.Email, UserName = user.UserName, IsInactive = user.Inactive };
             return View(model);
         }
 
@@ -80,6 +98,7 @@ namespace OKRs.Controllers
             user.Email = model.Email;
             user.Name = model.Name;
             user.UserName = model.UserName;
+            user.Inactive = model.IsInactive;
             var result = await _userRepository.SaveUser(user);
             if (result.Succeeded)
             {

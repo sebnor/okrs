@@ -15,5 +15,6 @@ namespace OKRs.Models.UserViewModels
         public string Email { get; set; }
         [Required]
         public string UserName { get; set; }
+        public bool IsInactive { get; set; }
     }
 }

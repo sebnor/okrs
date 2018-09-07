@@ -38,5 +38,22 @@
         </form>
     </div>
 </div>
+<div class="row">
+    <div class="col-md-4">
+        @if(Model.IsInactive) {
+            <form asp-action="Activate" method="POST" asp-route-id="@Model.Id">
+                <div class="form-group">
+                    <input type="submit" value="Activate" class="btn btn-success" />
+                </div>
+            </form>
+        } else {
+            <form asp-action="Inactivate" method="POST" asp-route-id="@Model.Id">
+                <div class="form-group">
+                    <input type="submit" value="Inactivate" class="btn btn-warning" />
+                </div>
+            </form>
+        }
+    </div>
+</div>
 
 

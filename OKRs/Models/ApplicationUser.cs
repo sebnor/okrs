@@ -18,6 +18,7 @@ namespace OKRs.Models
         }
 
         public string Name { get; set; }
+        public bool Inactive { get; set; }
 
         public string DisplayName
         {
