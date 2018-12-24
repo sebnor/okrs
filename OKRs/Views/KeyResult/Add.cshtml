@@ -1,0 +1,29 @@
+﻿@model OKRs.Models.ObjectiveViewModels.AddKeyResultViewModel
+
+@{
+    ViewData["Title"] = "Add";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<ol class="breadcrumb">
+    <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+    <li><a asp-controller="Objective" asp-action="Index">Objectives</a></li> @*TODO: Set back link to objectives list for objective.userId*@
+    <li><a asp-controller="Objective" asp-action="Details" asp-route-id="@Model.ObjectiveId">@Model.ObjectiveTitle</a></li>
+</ol>
+
+<h3>Add Key Result</h3>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Add" method="POST">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,29 @@
+﻿@model OKRs.Models.ObjectiveViewModels.EditKeyResultViewModel
+
+@{
+    ViewData["Title"] = "Edit Key Result";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<ol class="breadcrumb">
+    <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+    <li><a asp-controller="Objective" asp-action="Index">Objectives</a></li> @*TODO: Set back link to objectives list for objective.userId*@
+    <li><a asp-controller="Objective" asp-action="Details" asp-route-id="@Model.ObjectiveId">@Model.ObjectiveTitle</a></li>
+</ol>
+
+<h3>Edit Key Result</h3>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" method="POST" asp-route-keyResultId="@Model.Id" asp-route-objectiveId="@Model.ObjectiveId">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>

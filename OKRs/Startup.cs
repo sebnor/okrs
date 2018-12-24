@@ -1,15 +1,18 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using OKRs.Data;
 using OKRs.Models;
 using OKRs.Services;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using OKRs.Repositories;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using OKRs.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace OKRs
 {
@@ -26,17 +29,23 @@ namespace OKRs
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<ObjectivesDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            // Add application services.
-            services.Configure<AppConfiguration>(options => Configuration.Bind(options));
-            services.AddSingleton<IObjectivesRepository, ObjectivesRepository>();
-            services.AddTransient<IEmailSender, EmailSender>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<IObjectivesRepository, ObjectivesRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<UserManager<ApplicationUser>, UserManager<ApplicationUser>>();
+            services.AddScoped<ICurrentContext, CurrentContext>();
+
+            services.AddTransient<IEmailSender, EmailSender>(); //Add sendgrid service for emails
 
             services.AddAuthentication().AddGoogle(googleOptions =>
             {
@@ -46,16 +55,23 @@ namespace OKRs
                 {
                     OnCreatingTicket = context =>
                     {
+                        var domainFilter = Configuration["Authentication:Google:DomainFilter"];
                         string domain = context.User.Value<string>("domain");
-                        if (domain != "ifacts.se")
-                            throw new GoogleAuthenticationException("You must sign in with a ifacts.se email address");
+                        if (!string.IsNullOrEmpty(domainFilter) && domain != domainFilter)
+                            throw new GoogleAuthenticationException($"You must sign in with a {domainFilter} email address");
 
                         return Task.CompletedTask;
                     }
                 };
             });
 
-            services.AddMvc();
+            services.AddMvc(config =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build();
+                config.Filters.Add(new AuthorizeFilter(policy));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,7 +80,7 @@ namespace OKRs
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
+                //app.UseBrowserLink();
                 app.UseDatabaseErrorPage();
             }
             else

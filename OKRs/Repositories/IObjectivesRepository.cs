@@ -1,5 +1,4 @@
-﻿using MongoDB.Bson;
-using OKRs.Models;
+﻿using OKRs.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,5 +11,6 @@ namespace OKRs.Repositories
         Task SaveObjective(Objective objective);
         Task<List<Objective>> GetAllObjectives();
         Task<Objective> GetObjectiveById(Guid id);
+        Task<List<Objective>> GetObjectivesByUserId(Guid userId);
     }
 }

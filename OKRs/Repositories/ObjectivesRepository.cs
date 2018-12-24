@@ -3,49 +3,57 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Authentication;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using MongoDB.Bson;
-using MongoDB.Driver;
+using OKRs.Data;
 using OKRs.Models;
 
 namespace OKRs.Repositories
 {
     public class ObjectivesRepository : IObjectivesRepository
     {
-        private readonly IMongoDatabase _db;
-        private readonly AppConfiguration _configuration;
+        private readonly ObjectivesDbContext _context;
 
-        public ObjectivesRepository(IOptions<AppConfiguration> configuration)
+        public ObjectivesRepository(ObjectivesDbContext context)
         {
-            _configuration = configuration.Value;
-            MongoClientSettings settings = MongoClientSettings.FromUrl(new MongoUrl(_configuration.DataConnectionString));
-            settings.SslSettings = new SslSettings { EnabledSslProtocols = SslProtocols.Tls12 };
-            var mongoClient = new MongoClient(settings);
-            _db = mongoClient.GetDatabase(_configuration.Database);
+            _context = context;
         }
         public async Task CreateObjective(Objective objective)
         {
-            var collection = _db.GetCollection<Objective>("objectives");
-            await collection.InsertOneAsync(objective);
+            _context.Add(objective);
+            await _context.SaveChangesAsync();
         }
 
         public async Task SaveObjective(Objective objective)
         {
-            var collection = _db.GetCollection<Objective>("objectives");
-            var filter = Builders<Objective>.Filter.Eq(nameof(Objective.Id), objective.Id);
-            await collection.FindOneAndReplaceAsync(filter, objective);
+            _context.Update(objective);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<List<Objective>> GetAllObjectives()
         {
-            var collection = _db.GetCollection<Objective>("objectives");
-            return (await collection.FindAsync(Builders<Objective>.Filter.Empty)).ToList().OrderBy(x => x.Title).ToList(); //TODO: do orderBy using mongodb
+            return await _context
+                    .Objectives
+                    .Include(o => o.KeyResults)
+                    .OrderBy(o => o.Title)
+                    .ToListAsync();
         }
 
         public async Task<Objective> GetObjectiveById(Guid id)
         {
-            var collection = _db.GetCollection<Objective>("objectives");
-            return (await collection.FindAsync(Builders<Objective>.Filter.Eq(nameof(Objective.Id), id))).FirstOrDefault();
+            return await _context.Objectives
+                        .Include(o => o.KeyResults)
+                        .AsNoTracking()
+                        .SingleOrDefaultAsync(o => o.Id == id);
+        }
+
+        public async Task<List<Objective>> GetObjectivesByUserId(Guid userId)
+        {
+            return await _context.Objectives
+                   .Include(o => o.KeyResults)
+                   .AsNoTracking()
+                   .Where(o => o.UserId == userId)
+                   .ToListAsync();
         }
     }
 }

@@ -5,12 +5,13 @@ namespace OKRs.Models
 {
     public class Objective
     {
-        public Objective(string title)
+        public Objective() { }
+
+        public Objective(string title, Guid userId)
         {
-            Id = Guid.NewGuid();
             Title = title;
-            Created = DateTime.Now;
-            KeyResults = new List<KeyResult>();
+            UserId = userId;
+            LastUpdated = DateTime.Now;
         }
 
         public void AddKeyResult(KeyResult keyResult)
@@ -23,9 +24,16 @@ namespace OKRs.Models
             return KeyResults.Remove(keyResult);
         }
 
-        public List<KeyResult> KeyResults { get; private set; }
-        public Guid Id { get; private set; }
+        public void Touch()
+        {
+            LastUpdated = DateTime.Now;
+        }
+
         public string Title { get; set; }
-        public DateTime Created { get; private set; }
+        public Guid UserId { get; private set; }
+        public Guid Id { get; private set; }
+        public DateTime Created { get; private set; } = DateTime.Now;
+        public DateTime LastUpdated { get; private set; }
+        public List<KeyResult> KeyResults { get; private set; } = new List<KeyResult>();
     }
 }
