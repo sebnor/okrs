@@ -1,18 +1,20 @@
-﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using OKRs.Models;
-using OKRs.Services;
-using Microsoft.AspNetCore.Authentication.OAuth;
-using OKRs.Repositories;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Authorization;
 using OKRs.Data;
-using Microsoft.EntityFrameworkCore;
+using OKRs.Models;
+using OKRs.Repositories;
+using OKRs.Services;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace OKRs
 {
@@ -29,7 +31,8 @@ namespace OKRs
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            // services.AddOptions();
+            services.Configure<OKRsConfiguration>(Configuration.GetSection("Application"));
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDbContext<ObjectivesDbContext>(options =>
@@ -40,6 +43,7 @@ namespace OKRs
                 .AddDefaultTokenProviders();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<ProgramVersion, ProgramVersion>();
             services.AddScoped<IObjectivesRepository, ObjectivesRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<UserManager<ApplicationUser>, UserManager<ApplicationUser>>();

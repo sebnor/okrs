@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@inject OKRs.Services.ProgramVersion ProgramVersion
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -43,7 +44,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; 2018 - OKRs</p>
+            <p>&copy; 2018 - OKRs; Build: @ProgramVersion.Version()</p>
         </footer>
     </div>
 
