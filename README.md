@@ -1,6 +1,6 @@
 # OKRs
 
-Objectives and Key Results tooling built with .NET Core 2.1 and C#
+Objectives and Key Results tooling built with .NET Core 2.2 and C#
 
 Work in progress...
 
@@ -23,7 +23,7 @@ Make sure the following keys gets populated with correct data using VS user secr
 
 * [ ] Implement Role based user/admin access
 * [ ] Limit add/edit of other user's OKRs for admins
-* [ ] Inactivate users
+* [ ] Add docker image definition
 
 ### Nice to have
 
