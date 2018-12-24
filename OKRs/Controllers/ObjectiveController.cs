@@ -150,21 +150,25 @@ namespace OKRs.Controllers
 
         private async Task<AllObjectivesListViewModel> GetObjectiveModelForAllUsers()
         {
-            ObjectiveUserViewModel GetModelFromUser(ApplicationUser user) => new ObjectiveUserViewModel { Id = user?.UserId ?? Guid.Empty, Name = user?.DisplayName };
+            ObjectiveUserViewModel GetModelFromUser(ApplicationUser user) => new ObjectiveUserViewModel(user?.UserId, user?.DisplayName, user?.Inactive);
+            var users = _userRepository.GetAllUsers(includeInactive: true).ToDictionary(x => Guid.Parse(x.Id));
+
             var objectiveGroup = (await _objectivesRepository.GetAllObjectives()).GroupBy(x => x.UserId);
             return new AllObjectivesListViewModel
             {
                 UserObjectivesList = objectiveGroup.Select(objectives =>
                  new ObjectivesListByUserViewModel
                  {
-                     User = GetModelFromUser(_userRepository.GetUserById(objectives.Key).Result), //TODO: get all users in lookup table
+                     User = GetModelFromUser(users[objectives.Key]),
                      Objectives = objectives.Select(x => new ObjectiveListItemViewModel
                      {
                          Id = x.Id,
                          Title = x.Title,
                          KeyResults = x.KeyResults.Select(y => new KeyResultListItemViewModel { Id = y.Id, Description = y.Description }).ToList()
                      }).ToList()
-                 }).OrderBy(x => x.User.Name).ToList()
+                 }).Where(x => x.User.Inactive == false)
+                 .OrderBy(x => x.User.Name)
+                 .ToList()
             };
         }
     }
