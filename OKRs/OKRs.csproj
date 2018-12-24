@@ -5,7 +5,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="DotNetCore.NPOI" Version="1.2.1"/>
-    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.0"/>
+    <PackageReference Include="Microsoft.AspNetCore.App"/>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.0" PrivateAssets="All"/>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.5.1"/>
   </ItemGroup>
