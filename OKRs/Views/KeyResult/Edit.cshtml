@@ -22,8 +22,21 @@
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <input type="button" id="delete-button" value="Delete" class="btn btn-danger" />
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
+@section Scripts {
+    <script type="application/javascript">
+    $('#delete-button').one('click', function(e){
+        $.ajax({
+            url: '@OKRs.Extensions.UrlHelperExtensions.AbsoluteAction(Url, "Delete", "KeyResult", new { keyResultId = Model.Id })',
+            method: "DELETE"
+        }).done(function() {
+            location.href = '@OKRs.Extensions.UrlHelperExtensions.AbsoluteAction(Url, "Details", "Objective", new { Id = Model.ObjectiveId })';
+        })
+    });
+    </script>
+}
