@@ -94,5 +94,16 @@ namespace OKRs.Controllers
             return RedirectToAction(nameof(Details), new { objectiveId, keyResultId = keyResult.Id });
         }
 
+        [Route("[controller]/[action]/{keyResultId}")]
+        [HttpDelete]
+        public async Task<ActionResult> Delete(Guid keyResultId)
+        {
+            var objective = await _objectivesRepository.GetObjectiveByKeyResultId(keyResultId);
+            var keyResult = objective.KeyResults.Single(x => x.Id == keyResultId);
+            objective.KeyResults.Remove(keyResult);
+
+            await _objectivesRepository.SaveObjective(objective);
+            return Ok();
+        }
     }
 }
