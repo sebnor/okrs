@@ -132,6 +132,13 @@ namespace OKRs.Controllers
             return RedirectToAction(nameof(Details), new { id });
         }
 
+        [Route("[controller]/[action]/{id}")]
+        [HttpDelete]
+        public async Task<ActionResult> Delete(Guid id)
+        {
+            var objective = await _objectivesRepository.DeleteObjective(id);
+            return Ok();
+        }
         private async Task<ObjectivesListViewModel> GetObjectiveModelForUser(Guid userId)
         {
             var objectives = await _objectivesRepository.GetObjectivesByUserId(userId);

@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using OKRs.Data;
+using OKRs.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Authentication;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using OKRs.Data;
-using OKRs.Models;
 
 namespace OKRs.Repositories
 {
@@ -62,6 +62,14 @@ namespace OKRs.Repositories
                         .Include(o => o.KeyResults)
                         .Where(o => o.KeyResults.Any(k => k.Id == keyResultId))
                         .SingleOrDefaultAsync();
+        }
+
+        public async Task<Objective> DeleteObjective(Guid id)
+        {
+            var objective = await GetObjectiveById(id);
+            _context.Objectives.Remove(objective);
+            await _context.SaveChangesAsync();
+            return objective;
         }
     }
 }
