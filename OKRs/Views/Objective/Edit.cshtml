@@ -24,9 +24,21 @@
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="button" id="delete-button" value="Delete" class="btn btn-danger" />
             </div>
         </form>
     </div>
 </div>
 
-
+@section Scripts {
+    <script type="application/javascript">
+    $('#delete-button').one('click', function(e){
+        $.ajax({
+            url: '@OKRs.Extensions.UrlHelperExtensions.AbsoluteAction(Url, "Delete", "Objective", new { id = Model.Id })',
+            method: "DELETE"
+        }).done(function() {
+            location.href = '@OKRs.Extensions.UrlHelperExtensions.AbsoluteAction(Url, "Index", "Objective")';
+        })
+    });
+    </script>
+}
