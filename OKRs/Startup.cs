@@ -48,9 +48,9 @@ namespace OKRs
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<UserManager<ApplicationUser>, UserManager<ApplicationUser>>();
             services.AddScoped<ICurrentContext, CurrentContext>();
+            services.AddApplicationInsightsTelemetry();
 
             services.AddTransient<IEmailSender, EmailSender>(); //Add sendgrid service for emails
-
             services.AddAuthentication().AddGoogle(googleOptions =>
             {
                 googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
@@ -60,7 +60,7 @@ namespace OKRs
                     OnCreatingTicket = context =>
                     {
                         var domainFilter = Configuration["Authentication:Google:DomainFilter"];
-                        string domain = context.User.Value<string>("domain");
+                        string domain = context.User.GetString("domain");
                         if (!string.IsNullOrEmpty(domainFilter) && domain != domainFilter)
                             throw new GoogleAuthenticationException($"You must sign in with a {domainFilter} email address");
 
@@ -71,6 +71,7 @@ namespace OKRs
 
             services.AddMvc(config =>
             {
+                config.EnableEndpointRouting = false;
                 var policy = new AuthorizationPolicyBuilder()
                     .RequireAuthenticatedUser()
                     .Build();
@@ -85,7 +86,7 @@ namespace OKRs
             {
                 app.UseDeveloperExceptionPage();
                 //app.UseBrowserLink();
-                app.UseDatabaseErrorPage();
+                //app.UseDatabaseErrorPage();
             }
             else
             {
