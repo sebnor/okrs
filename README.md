@@ -1,6 +1,6 @@
 # OKRs
 
-Objectives and Key Results tooling built with .NET Core 3.0 and C#
+Objectives and Key Results tooling built with .NET Core 3.1 and C#
 
 Work in progress...
 
@@ -18,7 +18,7 @@ Make sure the following keys gets populated with correct data using VS user secr
 	}
   },
   "ConnectionStrings": {
-    "DefaultConnection": "Data Source=localhost;Initial Catalog=okrs;Integrated Security=True;"
+    "DefaultConnection": "Data Source=localhost;Initial Catalog=okrs;Integrated Security=True;", //SQL Server
   }
 }
 ```

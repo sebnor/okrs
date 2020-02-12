@@ -1,3 +1,4 @@
+using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Authorization;
@@ -13,7 +14,6 @@ using OKRs.Data;
 using OKRs.Models;
 using OKRs.Repositories;
 using OKRs.Services;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace OKRs
@@ -80,13 +80,14 @@ namespace OKRs
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            if (env.EnvironmentName == "Development")
             {
                 app.UseDeveloperExceptionPage();
                 //app.UseBrowserLink();
                 //app.UseDatabaseErrorPage();
+                TelemetryDebugWriter.IsTracingDisabled = true; // Avoid having App insights flooding the debug console
             }
             else
             {
