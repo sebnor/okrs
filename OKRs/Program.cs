@@ -14,7 +14,7 @@ namespace OKRs
             WebHost.CreateDefaultBuilder(args)
                 .CaptureStartupErrors(true)
 #if DEBUG
-                .UseUrls("http://*:5000")
+                .UseUrls("https://*:5000")
 #endif
                 .UseStartup<Startup>();
     }
