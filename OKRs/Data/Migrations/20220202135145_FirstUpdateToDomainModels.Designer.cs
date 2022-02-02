@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OKRs.Web.Data;
 
@@ -11,9 +12,10 @@ using OKRs.Web.Data;
 namespace OKRs.Migrations
 {
     [DbContext(typeof(ObjectivesDbContext))]
-    partial class ObjectivesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220202135145_FirstUpdateToDomainModels")]
+    partial class FirstUpdateToDomainModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

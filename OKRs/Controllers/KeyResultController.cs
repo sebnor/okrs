@@ -55,10 +55,7 @@ namespace OKRs.Web.Controllers
         public async Task<ActionResult> Add(Guid objectiveId, [FromForm] SaveKeyResultFormModel formModel)
         {
             var objective = await _objectivesRepository.GetObjectiveById(objectiveId);
-            var keyResult = new KeyResult()
-            {
-                Description = formModel.Description
-            };
+            var keyResult = new KeyResult(new Description(formModel.Description));
 
             objective.AddKeyResult(keyResult);
 
@@ -90,7 +87,7 @@ namespace OKRs.Web.Controllers
         {
             var objective = await _objectivesRepository.GetObjectiveById(objectiveId);
             var keyResult = objective.KeyResults.Single(x => x.Id == keyResultId);
-            keyResult.Description = formModel.Description;
+            keyResult.ChangeDescriptionTo(new Description(formModel.Description));
 
             await _objectivesRepository.SaveObjective(objective);
             return RedirectToAction(nameof(Details), new { objectiveId, keyResultId = keyResult.Id });

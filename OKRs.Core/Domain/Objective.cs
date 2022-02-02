@@ -2,13 +2,18 @@
 {
     public class Objective
     {
-        public Objective() { }
+        public string Title { get; set; }
+        public Guid UserId { get; private set; }
+        public Guid Id { get; private set; }
+        public DateTime Created { get; init; }
+        public DateTime LastUpdated { get; private set; }
+        public KeyResults KeyResults { get; init; }
 
         public Objective(string title, Guid userId)
         {
             Title = title;
             UserId = userId;
-            LastUpdated = DateTime.Now;
+            KeyResults = new KeyResults(new HashSet<KeyResult>());
         }
 
         public void AddKeyResult(KeyResult keyResult)
@@ -25,12 +30,5 @@
         {
             LastUpdated = DateTime.Now;
         }
-
-        public string Title { get; set; }
-        public Guid UserId { get; private set; }
-        public Guid Id { get; private set; }
-        public DateTime Created { get; private set; } = DateTime.Now;
-        public DateTime LastUpdated { get; private set; }
-        public List<KeyResult> KeyResults { get; private set; } = new List<KeyResult>();
     }
 }

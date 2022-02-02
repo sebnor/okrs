@@ -89,11 +89,8 @@ namespace OKRs.Web.Controllers
             if (objective.KeyResults.Any(x => x.Description == description))
                 return;
 
-            objective.AddKeyResult(new KeyResult()
-            {
-                Description = description
-            });
-            
+            objective.AddKeyResult(new KeyResult(new Description(description)));
+
             await _objectivesRepository.SaveObjective(objective);
         }
 

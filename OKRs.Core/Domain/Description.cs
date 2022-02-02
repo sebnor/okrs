@@ -1,23 +1,20 @@
 ﻿
 namespace OKRs.Core.Domain
 {
-    public class Description
+    public record Description
     {
-        private Description()
-        {
-            Value = string.Empty;
-        }
+        public string Value { get; }
 
-        public Description(string description)
+        public Description(string value)
         {
-            if (string.IsNullOrWhiteSpace(description))
+            if (string.IsNullOrWhiteSpace(value))
             {
-                throw new ArgumentOutOfRangeException(nameof(description));
+                throw new ArgumentOutOfRangeException(nameof(value));
             }
 
-            Value = description;
+            Value = value;
         }
 
-        public string Value { get; internal set; }
+        public static implicit operator string(Description description) => description.Value;
     }
 }

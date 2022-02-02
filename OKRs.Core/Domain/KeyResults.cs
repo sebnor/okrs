@@ -2,9 +2,9 @@
 
 namespace OKRs.Core.Domain
 {
-    public class KeyResults : IEnumerable<KeyResult>
+    public class KeyResults : ICollection<KeyResult>
     {
-        private HashSet<KeyResult> _keyResults;
+        private readonly HashSet<KeyResult> _keyResults;
 
         public KeyResults(HashSet<KeyResult> keyResults)
         {
@@ -16,24 +16,22 @@ namespace OKRs.Core.Domain
             _keyResults = keyResults.ToHashSet();
         }
 
-        public IEnumerator<KeyResult> GetEnumerator()
-        {
-            return _keyResults.GetEnumerator();
-        }
+        public int Count => _keyResults.Count;
 
-        public void Add(KeyResult keyResult)
-        {
-            _keyResults.Add(keyResult);
-        }
+        public bool IsReadOnly => true;
 
-        public bool Remove(KeyResult keyResult)
-        {
-            return _keyResults.Remove(keyResult);
-        }
+        public void Add(KeyResult item) => _keyResults.Add(item);
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        public void Clear() => _keyResults.Clear();
+
+        public bool Contains(KeyResult item) => _keyResults.Contains(item);
+
+        public void CopyTo(KeyResult[] array, int arrayIndex) => _keyResults.CopyTo(array, arrayIndex);
+
+        public IEnumerator<KeyResult> GetEnumerator() => _keyResults.GetEnumerator();
+
+        public bool Remove(KeyResult item) => _keyResults.Remove(item);
+
+        IEnumerator IEnumerable.GetEnumerator() => _keyResults.GetEnumerator();
     }
 }

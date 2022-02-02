@@ -49,6 +49,7 @@ namespace OKRs.Web
             services.AddScoped<UserManager<ApplicationUser>, UserManager<ApplicationUser>>();
             services.AddScoped<ICurrentContext, CurrentContext>();
             services.AddApplicationInsightsTelemetry();
+            services.AddSingleton<ITextSerializer, JsonTextSerializer>();
 
             services.AddTransient<IEmailSender, EmailSender>(); //Add sendgrid service for emails
             services.AddAuthentication().AddGoogle(googleOptions =>

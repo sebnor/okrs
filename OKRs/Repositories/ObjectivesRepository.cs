@@ -35,8 +35,6 @@ namespace OKRs.Web.Repositories
         {
             return await _context
                     .Objectives
-                    .Include(o => o.KeyResults)
-                    .AsNoTracking()
                     .OrderBy(o => o.Title)
                     .ToListAsync();
         }
@@ -44,15 +42,12 @@ namespace OKRs.Web.Repositories
         public async Task<Objective> GetObjectiveById(Guid id)
         {
             return await _context.Objectives
-                        .Include(o => o.KeyResults)
                         .SingleOrDefaultAsync(o => o.Id == id);
         }
 
         public async Task<List<Objective>> GetObjectivesByUserId(Guid userId)
         {
             return await _context.Objectives
-                   .Include(o => o.KeyResults)
-                   .AsNoTracking()
                    .Where(o => o.UserId == userId)
                    .ToListAsync();
         }
@@ -60,8 +55,6 @@ namespace OKRs.Web.Repositories
         public async Task<Objective> GetObjectiveByKeyResultId(Guid keyResultId)
         {
             return await _context.Objectives
-                        .Include(o => o.KeyResults)
-                        .Where(o => o.KeyResults.Any(k => k.Id == keyResultId))
                         .SingleOrDefaultAsync();
         }
 
