@@ -4,10 +4,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using OKRs.Extensions;
-using OKRs.Models;
-using OKRs.Models.ManageViewModels;
-using OKRs.Services;
+using OKRs.Web.Models.ManageViewModels;
+using OKRs.Web.Extensions;
+using OKRs.Web.Models;
+using OKRs.Web.Models.ManageViewModels;
+using OKRs.Web.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
-namespace OKRs.Controllers
+namespace OKRs.Web.Controllers
 {
     [Authorize]
     [Route("[controller]/[action]")]

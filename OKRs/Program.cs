@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace OKRs
+namespace OKRs.Web
 {
     public class Program
     {

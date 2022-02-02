@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using OKRs.Models;
-using OKRs.Models.UserViewModels;
-using OKRs.Repositories;
+using OKRs.Web.Models;
+using OKRs.Web.Models.UserViewModels;
+using OKRs.Web.Repositories;
 
-namespace OKRs.Controllers
+namespace OKRs.Web.Controllers
 {
     //[Authorize(Roles = "Admin")]
     [Authorize]

@@ -2,11 +2,13 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using OKRs.Models;
-using OKRs.Models.ObjectiveViewModels;
-using OKRs.Repositories;
+using OKRs.Core.Domain;
+using OKRs.Web.Models;
+using OKRs.Web.Models.ObjectiveViewModels;
+using OKRs.Web.Models.ObjectiveViewModels;
+using OKRs.Web.Repositories;
 
-namespace OKRs.Controllers
+namespace OKRs.Web.Controllers
 {
     public class KeyResultController : Controller
     {
@@ -53,10 +55,11 @@ namespace OKRs.Controllers
         public async Task<ActionResult> Add(Guid objectiveId, [FromForm] SaveKeyResultFormModel formModel)
         {
             var objective = await _objectivesRepository.GetObjectiveById(objectiveId);
-            var keyResult = new KeyResult
+            var keyResult = new KeyResult()
             {
                 Description = formModel.Description
             };
+
             objective.AddKeyResult(keyResult);
 
             await _objectivesRepository.SaveObjective(objective);
@@ -88,7 +91,6 @@ namespace OKRs.Controllers
             var objective = await _objectivesRepository.GetObjectiveById(objectiveId);
             var keyResult = objective.KeyResults.Single(x => x.Id == keyResultId);
             keyResult.Description = formModel.Description;
-            keyResult.Touch();
 
             await _objectivesRepository.SaveObjective(objective);
             return RedirectToAction(nameof(Details), new { objectiveId, keyResultId = keyResult.Id });

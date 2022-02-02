@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OKRs.Models.ManageViewModels
+namespace OKRs.Web.Models.ManageViewModels
 {
     public class RemoveLoginViewModel
     {

@@ -1,5 +1,4 @@
-﻿
-namespace OKRs.Models.ObjectiveViewModels
+﻿namespace OKRs.Web.Models.ObjectiveViewModels
 {
     public class SaveKeyResultFormModel
     {

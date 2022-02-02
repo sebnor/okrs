@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace OKRs.Models.ObjectiveViewModels
+namespace OKRs.Web.Models.ObjectiveViewModels
 {
 
     public class ObjectivesListByUserViewModel

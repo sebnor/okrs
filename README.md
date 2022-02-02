@@ -27,6 +27,8 @@ Make sure the following keys gets populated with correct data using VS user secr
 `dotnet ef database update --context ObjectivesDbContext`
 `dotnet ef database update --context ApplicationDbContext`
 
+If for some reason you can't use the dotnet cli, use https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/?tabs=vs the Entity Framework tools mentioned in the article.
+
 ## List of potential future features
 
 ### Prioritized

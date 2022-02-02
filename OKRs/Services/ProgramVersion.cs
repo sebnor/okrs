@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 
-namespace OKRs.Services
+namespace OKRs.Web.Services
 {
     public class ProgramVersion
     {

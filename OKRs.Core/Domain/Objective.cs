@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace OKRs.Models
+﻿namespace OKRs.Core.Domain
 {
     public class Objective
     {

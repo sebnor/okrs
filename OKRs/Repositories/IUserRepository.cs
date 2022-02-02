@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using OKRs.Models;
+using OKRs.Web.Models;
 
-namespace OKRs.Repositories
+namespace OKRs.Web.Repositories
 {
     public interface IUserRepository
     {

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace OKRs.Services
+namespace OKRs.Web.Services
 {
     public interface IEmailSender
     {

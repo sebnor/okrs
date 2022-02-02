@@ -1,9 +1,9 @@
-﻿using OKRs.Models;
+﻿using OKRs.Core.Domain;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace OKRs.Repositories
+namespace OKRs.Web.Repositories
 {
     public interface IObjectivesRepository
     {

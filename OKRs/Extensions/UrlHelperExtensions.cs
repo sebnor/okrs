@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using OKRs.Controllers;
+using OKRs.Web.Controllers;
 
-namespace OKRs.Extensions
+namespace OKRs.Web.Extensions
 {
     public static class UrlHelperExtensions
     {

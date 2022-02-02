@@ -1,4 +1,4 @@
-﻿@model OKRs.Models.ObjectiveViewModels.UpdateObjectiveViewModel
+﻿@model             UpdateObjectiveViewModel
 
 @{
     ViewData["Title"] = "Edit Objective";
@@ -34,10 +34,10 @@
     <script type="application/javascript">
     $('#delete-button').one('click', function(e){
         $.ajax({
-            url: '@OKRs.Extensions.UrlHelperExtensions.AbsoluteAction(Url, "Delete", "Objective", new { id = Model.Id })',
+            url: '@OKRs.Web.Extensions.UrlHelperExtensions.AbsoluteAction(Url, "Delete", "Objective", new { id = Model.Id })',
             method: "DELETE"
         }).done(function() {
-            location.href = '@OKRs.Extensions.UrlHelperExtensions.AbsoluteAction(Url, "Index", "Objective")';
+            location.href = '@OKRs.Web.Extensions.UrlHelperExtensions.AbsoluteAction(Url, "Index", "Objective")';
         })
     });
     </script>

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace OKRs.Services
+namespace OKRs.Web.Services
 {
     // This class is used by the application to send email for account confirmation and password reset.
     // For more details see https://go.microsoft.com/fwlink/?LinkID=532713

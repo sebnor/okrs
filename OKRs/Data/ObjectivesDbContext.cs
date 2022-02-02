@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OKRs.Models;
+using OKRs.Core.Domain;
 
-namespace OKRs.Data
+namespace OKRs.Web.Data
 {
     public class ObjectivesDbContext : DbContext
     {
@@ -12,9 +12,5 @@ namespace OKRs.Data
 
         public DbSet<Objective> Objectives { get; set; }
         public DbSet<KeyResult> KeyResults { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-        }
     }
 }

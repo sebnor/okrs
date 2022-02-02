@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using OKRs.Services;
+using OKRs.Web.Services;
 
-namespace OKRs.Services
+namespace OKRs.Web.Extensions
 {
     public static class EmailSenderExtensions
     {

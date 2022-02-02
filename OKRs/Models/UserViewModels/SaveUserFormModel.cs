@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace OKRs.Models.UserViewModels
+namespace OKRs.Web.Models.UserViewModels
 {
     public class SaveUserFormModel
     {
