@@ -1,14 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using OKRs.Models;
-using OKRs.Models.ObjectiveViewModels;
-using OKRs.Repositories;
+using OKRs.Core.Domain;
+using OKRs.Web.Models.ObjectiveViewModels;
+using OKRs.Web.Models;
+using OKRs.Web.Repositories;
 
-namespace OKRs.Controllers
+namespace OKRs.Web.Controllers
 {
     public class ObjectiveController : Controller
     {
@@ -117,7 +117,7 @@ namespace OKRs.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(Guid id, [FromForm]UpdateObjectiveFormModel formModel)
+        public async Task<ActionResult> Edit(Guid id, [FromForm] UpdateObjectiveFormModel formModel)
         {
             if (!ModelState.IsValid)
             {
@@ -126,7 +126,6 @@ namespace OKRs.Controllers
             }
             var objective = await _objectivesRepository.GetObjectiveById(id);
             objective.Title = formModel.Title;
-            objective.Touch();
             await _objectivesRepository.SaveObjective(objective);
 
             return RedirectToAction(nameof(Details), new { id });

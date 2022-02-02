@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using OKRs.Models;
+using OKRs.Web.Models;
 
-namespace OKRs.Repositories
+namespace OKRs.Web.Repositories
 {
     public class UserRepository : IUserRepository
     {

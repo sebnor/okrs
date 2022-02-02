@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 
-namespace OKRs.Models.ManageViewModels
+namespace OKRs.Web.Models.ManageViewModels
 {
     public class ExternalLoginsViewModel
     {

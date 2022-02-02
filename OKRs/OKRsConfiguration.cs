@@ -1,4 +1,4 @@
-﻿namespace OKRs
+﻿namespace OKRs.Web
 {
     public class OKRsConfiguration
     {

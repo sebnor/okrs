@@ -1,6 +1,6 @@
 using System;
 
-namespace OKRs.Models
+namespace OKRs.Web.Models
 {
     public class ErrorViewModel
     {

@@ -5,17 +5,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using OKRs.Extensions;
-using OKRs.Models;
-using OKRs.Models.AccountViewModels;
-using OKRs.Services;
+using OKRs.Web.Extensions;
+using OKRs.Web.Models;
+using OKRs.Web.Models.AccountViewModels;
+using OKRs.Web.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace OKRs.Controllers
+namespace OKRs.Web.Controllers
 {
     [Authorize]
     [Route("[controller]/[action]")]
@@ -251,7 +251,7 @@ namespace OKRs.Controllers
             {
                 return RedirectToAction(nameof(Lockout));
             }
-            
+
             // If a user with the provided email already exists, connect that user with the external login
             var name = info.Principal.FindFirstValue(ClaimTypes.Name);
             var email = info.Principal.FindFirstValue(ClaimTypes.Email);
@@ -340,7 +340,7 @@ namespace OKRs.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(model.Email);
-                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+                if (user == null || !await _userManager.IsEmailConfirmedAsync(user))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
                     return RedirectToAction(nameof(ForgotPasswordConfirmation));

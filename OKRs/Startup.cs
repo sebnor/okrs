@@ -10,13 +10,13 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using OKRs.Data;
-using OKRs.Models;
-using OKRs.Repositories;
-using OKRs.Services;
+using OKRs.Web.Data;
+using OKRs.Web.Models;
+using OKRs.Web.Repositories;
+using OKRs.Web.Services;
 using System.Threading.Tasks;
 
-namespace OKRs
+namespace OKRs.Web
 {
     public class Startup
     {

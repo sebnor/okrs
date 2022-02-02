@@ -7,10 +7,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
-using OKRs.Models;
-using OKRs.Repositories;
+using OKRs.Core.Domain;
+using OKRs.Web.Models;
+using OKRs.Web.Repositories;
 
-namespace OKRs.Controllers
+namespace OKRs.Web.Controllers
 {
     public class ImportController : Controller
     {
@@ -51,7 +52,7 @@ namespace OKRs.Controllers
                     //var objectiveLookup = (await _objectivesRepository.GetAllObjectives()).ToDictionary(x => x.Title);
                     var objectiveLookup = await GetObjectiveLookup();
 
-                    for (int i = (sheet.FirstRowNum + 1); i <= sheet.LastRowNum; i++) //Read Excel File
+                    for (int i = sheet.FirstRowNum + 1; i <= sheet.LastRowNum; i++) //Read Excel File
                     {
                         IRow row = sheet.GetRow(i);
                         if (row == null) continue;
@@ -88,7 +89,11 @@ namespace OKRs.Controllers
             if (objective.KeyResults.Any(x => x.Description == description))
                 return;
 
-            objective.AddKeyResult(new KeyResult { Description = description });
+            objective.AddKeyResult(new KeyResult()
+            {
+                Description = description
+            });
+            
             await _objectivesRepository.SaveObjective(objective);
         }
 

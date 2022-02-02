@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using OKRs.Models;
+using OKRs.Web.Models;
 
-namespace OKRs.Data
+namespace OKRs.Web.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {

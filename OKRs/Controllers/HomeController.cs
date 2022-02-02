@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OKRs.Models;
+using OKRs.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OKRs.Controllers
+namespace OKRs.Web.Controllers
 {
     public class HomeController : Controller
     {

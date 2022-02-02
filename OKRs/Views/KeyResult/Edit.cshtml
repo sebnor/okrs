@@ -1,4 +1,4 @@
-﻿@model OKRs.Models.ObjectiveViewModels.EditKeyResultViewModel
+﻿@model             EditKeyResultViewModel
 
 @{
     ViewData["Title"] = "Edit Key Result";
@@ -32,10 +32,10 @@
     <script type="application/javascript">
     $('#delete-button').one('click', function(e){
         $.ajax({
-            url: '@OKRs.Extensions.UrlHelperExtensions.AbsoluteAction(Url, "Delete", "KeyResult", new { keyResultId = Model.Id })',
+            url: '@OKRs.Web.Extensions.UrlHelperExtensions.AbsoluteAction(Url, "Delete", "KeyResult", new { keyResultId = Model.Id })',
             method: "DELETE"
         }).done(function() {
-            location.href = '@OKRs.Extensions.UrlHelperExtensions.AbsoluteAction(Url, "Details", "Objective", new { Id = Model.ObjectiveId })';
+            location.href = '@OKRs.Web.Extensions.UrlHelperExtensions.AbsoluteAction(Url, "Details", "Objective", new { Id = Model.ObjectiveId })';
         })
     });
     </script>

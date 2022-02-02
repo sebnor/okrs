@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using OKRs.Models;
+using OKRs.Web.Models;
 
-namespace OKRs
+namespace OKRs.Web
 {
     public interface ICurrentContext
     {

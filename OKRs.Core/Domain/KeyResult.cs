@@ -1,12 +1,9 @@
-﻿using System;
-
-namespace OKRs.Models
+﻿namespace OKRs.Core.Domain
 {
     public class KeyResult
     {
         public KeyResult()
         {
-            LastUpdated = DateTime.Now;
         }
 
         public void Touch()
@@ -14,9 +11,9 @@ namespace OKRs.Models
             LastUpdated = DateTime.Now; //TODO: solve with EF on add and update trigger
         }
 
-        public Guid Id { get; private set; } // = Guid.NewGuid();
-        public string Description { get; set; }
+        public Guid Id { get; private set; }
+        public string Description { get; set; } = string.Empty;
         public DateTime Created { get; private set; } = DateTime.Now;
-        public DateTime LastUpdated { get; private set; }
+        public DateTime LastUpdated { get; private set; } = DateTime.Now;
     }
 }

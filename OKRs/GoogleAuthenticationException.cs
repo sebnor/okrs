@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace OKRs
+namespace OKRs.Web
 {
     [Serializable]
     internal class GoogleAuthenticationException : Exception

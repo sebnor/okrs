@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using OKRs.Models;
+using OKRs.Web.Models;
 using System;
 using System.Threading.Tasks;
 
-namespace OKRs
+namespace OKRs.Web
 {
     public class CurrentContext : ICurrentContext
     {

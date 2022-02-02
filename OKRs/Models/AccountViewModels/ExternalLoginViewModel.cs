@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OKRs.Models.AccountViewModels
+namespace OKRs.Web.Models.AccountViewModels
 {
     public class ExternalLoginViewModel
     {
