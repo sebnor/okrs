@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace OKRs.Models.ObjectiveViewModels
+﻿namespace OKRs.Models.ObjectiveViewModels
 {
     public class AddKeyResultViewModel : SaveKeyResultFormModel
     {

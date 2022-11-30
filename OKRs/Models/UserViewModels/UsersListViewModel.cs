@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace OKRs.Models.UserViewModels
+﻿namespace OKRs.Models.UserViewModels
 {
     public class UsersListViewModel
     {

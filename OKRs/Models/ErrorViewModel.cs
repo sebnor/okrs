@@ -1,5 +1,3 @@
-using System;
-
 namespace OKRs.Models
 {
     public class ErrorViewModel

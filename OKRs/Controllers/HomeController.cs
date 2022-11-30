@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OKRs.Models;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace OKRs.Controllers
 {

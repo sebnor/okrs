@@ -2,18 +2,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using OKRs.Extensions;
 using OKRs.Models;
 using OKRs.Models.AccountViewModels;
 using OKRs.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace OKRs.Controllers
 {
@@ -251,7 +244,7 @@ namespace OKRs.Controllers
             {
                 return RedirectToAction(nameof(Lockout));
             }
-            
+
             // If a user with the provided email already exists, connect that user with the external login
             var name = info.Principal.FindFirstValue(ClaimTypes.Name);
             var email = info.Principal.FindFirstValue(ClaimTypes.Email);

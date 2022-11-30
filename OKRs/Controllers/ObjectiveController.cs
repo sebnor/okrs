@@ -1,9 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using OKRs.Models;
 using OKRs.Models.ObjectiveViewModels;
 using OKRs.Repositories;
@@ -117,7 +112,7 @@ namespace OKRs.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(Guid id, [FromForm]UpdateObjectiveFormModel formModel)
+        public async Task<ActionResult> Edit(Guid id, [FromForm] UpdateObjectiveFormModel formModel)
         {
             if (!ModelState.IsValid)
             {

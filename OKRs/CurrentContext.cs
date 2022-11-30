@@ -1,8 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using OKRs.Models;
-using System;
-using System.Threading.Tasks;
 
 namespace OKRs
 {
