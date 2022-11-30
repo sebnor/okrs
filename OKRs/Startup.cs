@@ -56,7 +56,7 @@ namespace OKRs
                         var domainFilter = Configuration["Authentication:Google:DomainFilter"];
                         string domain = context.User.GetString("domain");
                         if (!string.IsNullOrEmpty(domainFilter) && domain != domainFilter)
-                            throw new GoogleAuthenticationException($"You must sign in with a {domainFilter} email address");
+                            throw new GoogleAuthenticationException($"You must sign in with an {domainFilter} email address. You signed in with a {domain} email address.");
 
                         return Task.CompletedTask;
                     }
