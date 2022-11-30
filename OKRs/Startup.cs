@@ -2,19 +2,13 @@ using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using OKRs.Data;
 using OKRs.Models;
 using OKRs.Repositories;
 using OKRs.Services;
-using System.Threading.Tasks;
 
 namespace OKRs
 {
@@ -62,7 +56,7 @@ namespace OKRs
                         var domainFilter = Configuration["Authentication:Google:DomainFilter"];
                         string domain = context.User.GetString("domain");
                         if (!string.IsNullOrEmpty(domainFilter) && domain != domainFilter)
-                            throw new GoogleAuthenticationException($"You must sign in with a {domainFilter} email address");
+                            throw new GoogleAuthenticationException($"You must sign in with an {domainFilter} email address. You signed in with a {domain} email address.");
 
                         return Task.CompletedTask;
                     }

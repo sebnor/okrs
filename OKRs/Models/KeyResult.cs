@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace OKRs.Models
+﻿namespace OKRs.Models
 {
     public class KeyResult
     {

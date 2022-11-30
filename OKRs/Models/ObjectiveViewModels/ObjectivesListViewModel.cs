@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace OKRs.Models.ObjectiveViewModels
+﻿namespace OKRs.Models.ObjectiveViewModels
 {
     public class ObjectivesListViewModel
     {

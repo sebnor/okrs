@@ -1,10 +1,11 @@
 name: Build
+
 on:
   push:
-    branches:
-      - develop
+    branches: [main]
   pull_request:
-    types: [opened, synchronize, reopened]
+    branches: [main]
+
 jobs:
   build:
     name: Build
@@ -14,13 +15,12 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.11
-      - uses: actions/checkout@v2
-        with: 
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - uses: actions/setup-dotnet@v1
+      - uses: actions/checkout@v3
         with:
-          dotnet-version: '6.0.x'
-          include-prerelease: true
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+      - uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "6.0.x"
       - name: Cache SonarCloud packages
         uses: actions/cache@v1
         with:
@@ -42,7 +42,7 @@ jobs:
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
       - name: Build and analyze
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |

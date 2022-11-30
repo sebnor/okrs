@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace OKRs.Models.UserViewModels
+﻿namespace OKRs.Models.UserViewModels
 {
     public class UserListItemViewModel
     {
