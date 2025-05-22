@@ -4,14 +4,12 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using OKRs.Data;
 using OKRs;
 using OKRs.Models;
 using OKRs.Repositories;
 using OKRs.Services;
-using System.Threading.Tasks;
 
 var builder = WebApplication.CreateBuilder(args);
 
