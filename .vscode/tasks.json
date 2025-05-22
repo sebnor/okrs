@@ -7,7 +7,9 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/OKRs/OKRs.csproj"
+                "${workspaceFolder}/OKRs/OKRs.csproj",
+                "--framework",
+                "net9.0"
             ],
             "problemMatcher": "$msCompile"
         }
