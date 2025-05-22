@@ -1,6 +1,6 @@
 # OKRs
 
-Objectives and Key Results tooling built with .NET Core 3.1 and C#
+Objectives and Key Results tooling built with .NET 9 and C#
 
 Work in progress...
 
