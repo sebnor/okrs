@@ -24,6 +24,7 @@ namespace OKRs.Controllers
             {
                 ObjectiveTitle = objective.Title,
                 Description = keyResult.Description,
+                CompletionRate = keyResult.CompletionRate,
                 Id = keyResult.Id,
                 ObjectiveId = objective.Id,
                 Created = objective.Created
@@ -52,7 +53,8 @@ namespace OKRs.Controllers
             var objective = await _objectivesRepository.GetObjectiveById(objectiveId);
             var keyResult = new KeyResult
             {
-                Description = formModel.Description
+                Description = formModel.Description,
+                CompletionRate = formModel.CompletionRate
             };
             objective.AddKeyResult(keyResult);
 
@@ -73,6 +75,7 @@ namespace OKRs.Controllers
                 ObjectiveId = objective.Id,
                 ObjectiveTitle = objective.Title,
                 Description = keyResult.Description,
+                CompletionRate = keyResult.CompletionRate,
             };
             return View(model);
         }
@@ -85,6 +88,7 @@ namespace OKRs.Controllers
             var objective = await _objectivesRepository.GetObjectiveById(objectiveId);
             var keyResult = objective.KeyResults.Single(x => x.Id == keyResultId);
             keyResult.Description = formModel.Description;
+            keyResult.CompletionRate = formModel.CompletionRate;
             keyResult.Touch();
 
             await _objectivesRepository.SaveObjective(objective);

@@ -28,6 +28,19 @@
     </div>
     @foreach (var keyResult in Model.KeyResults)
     {
-        <a asp-controller="KeyResult" asp-action="Details" asp-route-objectiveId="@Model.Id" asp-route-keyResultId="@keyResult.Id" class="list-group-item">K: @keyResult.Description</a>
+        <a asp-controller="KeyResult" asp-action="Details" asp-route-objectiveId="@Model.Id" asp-route-keyResultId="@keyResult.Id" class="list-group-item">
+            <div class="clearfix">
+                <span class="pull-left">K: @keyResult.Description</span>
+                <span class="pull-right">
+                    <small class="text-muted">@((keyResult.CompletionRate * 100).ToString("F0"))% complete</small>
+                </span>
+            </div>
+            <div class="progress" style="height: 5px; margin-top: 5px; margin-bottom: 0;">
+                <div class="progress-bar @(keyResult.CompletionRate >= 0.7m ? "progress-bar-success" : keyResult.CompletionRate >= 0.3m ? "progress-bar-warning" : "progress-bar-danger")" 
+                     role="progressbar" 
+                     style="width: @((keyResult.CompletionRate * 100).ToString("F0"))%">
+                </div>
+            </div>
+        </a>
     }
 </div>
