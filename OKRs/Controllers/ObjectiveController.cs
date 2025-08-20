@@ -59,7 +59,7 @@ namespace OKRs.Controllers
                 Id = objective.Id,
                 Title = objective.Title,
                 Created = objective.Created,
-                KeyResults = objective.KeyResults.Select(y => new KeyResultListItemViewModel { Id = y.Id, Description = y.Description }).ToList()
+                KeyResults = objective.KeyResults.Select(y => new KeyResultListItemViewModel { Id = y.Id, Description = y.Description, CompletionRate = y.CompletionRate }).ToList()
             };
             return View(model);
         }
@@ -145,7 +145,7 @@ namespace OKRs.Controllers
                 {
                     Id = x.Id,
                     Title = x.Title,
-                    KeyResults = x.KeyResults.Select(y => new KeyResultListItemViewModel { Id = y.Id, Description = y.Description }).ToList()
+                    KeyResults = x.KeyResults.Select(y => new KeyResultListItemViewModel { Id = y.Id, Description = y.Description, CompletionRate = y.CompletionRate }).ToList()
                 }).ToList()
             };
         }
@@ -166,7 +166,7 @@ namespace OKRs.Controllers
                      {
                          Id = x.Id,
                          Title = x.Title,
-                         KeyResults = x.KeyResults.Select(y => new KeyResultListItemViewModel { Id = y.Id, Description = y.Description }).ToList()
+                         KeyResults = x.KeyResults.Select(y => new KeyResultListItemViewModel { Id = y.Id, Description = y.Description, CompletionRate = y.CompletionRate }).ToList()
                      }).ToList()
                  }).Where(x => x.User.Inactive == false)
                  .OrderBy(x => x.User.Name)
